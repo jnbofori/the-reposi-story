@@ -1,0 +1,177 @@
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  /*background-image: url(images/background_two.jpg);*/
+  background-size: cover;
+  background-color: #CFD8DC;
+}
+
+.indexFormcls {
+  background-color: white;
+  margin: auto;
+  width: 40%;
+  overflow: auto;
+  margin-top: 17px;
+}
+
+.txtform {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.indexButtons {
+  background-color: #00796B;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+u{
+  color: #00796B;
+}
+
+u:hover{
+  color: black;
+  cursor: pointer;
+}
+
+a{
+  color: #00796B;
+}
+
+.cancelbtn {
+  width: auto;
+  padding: 10px 18px;
+  background-color: #f44336;
+}
+
+
+img.avatar {
+  padding: 10px;
+  height: 300px;
+  width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: -2px;
+  display: block;
+
+}
+
+.container {
+  padding: 9px;
+}
+
+.error{
+  color: #B00020;
+  margin: auto;
+  width: 96%;
+  height: 25px;
+  padding-top: 9px;
+  padding-left: 5px;
+}
+
+.signuperror{
+  color: #B00020;
+  float: right;
+  font-size: 13px;
+  display: none;
+}
+
+span.psw {
+  float: right;
+  padding-top: 0px;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0,0.4);
+  padding-top: 50px;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+  border: 1px solid #888;
+  width: 50%; /* Could be more or less, depending on screen size */
+}
+
+/* Style the horizontal ruler */
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+/* The Close Button (x) */
+.close {
+  position: absolute;
+  right: 35px;
+  top: 15px;
+  font-size: 40px;
+  font-weight: bold;
+  color: #f1f1f1;
+}
+
+.close:hover,
+.close:focus {
+  color: #f44336;
+  cursor: pointer;
+}
+
+/* Clear floats */
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+#signup{
+  float: right;
+  padding-top: 15px;
+  margin-right: 0px;
+}
+
+/* Change styles for cancel button and signup button on extra small screens */
+@media screen and (max-width: 700px) {
+  .cancelbtn, .indexButtons {
+    width: 100%;
+  }
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 700px) {
+  span.psw {
+    display: block;
+    float: none;
+  }
+  .cancelbtn {
+    width: 100%;
+  }
+
+  .indexFormcls{
+    width: 100%;
+  }
+
+  .modal-content{
+    width: 100%;
+  }
+}
+
+

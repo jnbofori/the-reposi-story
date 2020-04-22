@@ -1,0 +1,45 @@
+{{> header}}
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        let errMsg = document.getElementById("error");
+        if(errMsg.innerHTML !== "") {
+            setTimeout(function () {
+                errMsg.innerHTML = "";
+            }, 4000);
+        }
+    })
+</script>
+
+<div class="inner-container">
+<h2 class="page-header">Search Authors</h2>
+<div class="error" id="error">{{messages.err}}</div>
+<form action="/authors" method="GET">
+    <div class="form-row">
+        <div class="form-item">
+            <label for="name">Name</label>
+            <input type="text" name="name" required>
+        </div>
+    </div>
+    <div class="form-row form-row-end">
+    <button class="btn btn-primary" type="submit">Search</button>
+    </div>
+</form>
+<br>
+{{#each authors}}
+    <div class="author-row">
+        <div class="author-item">
+            <div>{{author_name}}</div>
+            <div>{{author_description}}</div>
+        </div>
+
+    <div class="btn-row">
+    <a class="btn btn-primary" href="/authors/{{author_id}}">View</a>
+    <a class="btn btn-primary" href="/authors/{{author_id}}/edit">Edit</a>
+    <form method="POST" action="/authors/{{author_id}}?_method=DELETE">
+        <button class="btn btn-danger" type="submit">Delete</button>
+    </form>
+    </div>
+    </div>
+{{/each}}
+</div>

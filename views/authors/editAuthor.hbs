@@ -1,0 +1,14 @@
+{{> header}}
+
+<div class="inner-container">
+<h2 class="page-header">Edit Author</h2>
+{{#each authors}}
+<form action="/authors/{{author_id}}?_method=PUT" method="POST">
+    {{> form_fields}}
+    <div class="form-row form-row-end btn-row">
+    <a class="btn btn-danger" href="/authors/{{author_id}}">Cancel</a>
+    <button class="btn btn-primary" type="submit">Update</button>
+    </div>
+</form>
+{{/each}}
+</div>

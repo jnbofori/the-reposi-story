@@ -1,0 +1,43 @@
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        let date = document.getElementById("date");
+        let date_value = date.innerHTML;
+        let date_str = String(date_value);
+        let split_str = date_str.split(" ");
+        date.innerHTML = "";
+        for(let i=0; i<4; i++) {
+            date.innerHTML = date.innerHTML + split_str[i]+" ";
+        }
+    })
+</script>
+
+{{> header}}
+<div class="inner-container">
+{{#each books}}
+<h2 class="page-header">{{title}}</h2>
+<div class="book-details">
+<div>
+    <img class="book-cover" src="/images/uploads/{{cover_image_name}}">
+    <div class="book-details-btn-grid">
+        <a class="btn btn-primary" href="/books/{{book_id}}/edit">Edit</a>
+        <form method="POST" action="/books/{{book_id}}?_method=DELETE">
+            <button class="btn btn-danger" type="submit">Delete</button>
+        </form>
+        <a class="btn btn-primary book-details-author-button" href="/authors/{{author_id}}">View Author</a>
+    </div>
+</div>
+<div class="book-details-grid">
+    <div class="book-details-label">Author:</div>
+    <div>{{author_name}}</div>
+    <div class="book-details-label">Publish Date:</div>
+    <div><span id="date">{{publish_date}}</span></div>
+    <div class="book-details-label">Page Count:</div>
+    <div>{{page_count}}</div>
+    <div class="book-details-label">Description:</div>
+    <div id="book-description">{{description}}</div>
+</div>
+{{/each}}
+</div>
+</div>
+
+
