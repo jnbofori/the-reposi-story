@@ -10,7 +10,8 @@ body {
   margin: auto;
   width: 40%;
   overflow: auto;
-  margin-top: 17px;
+  margin-top: 30px;
+  line-height: 25px;
 }
 
 .txtform {
@@ -57,14 +58,14 @@ a{
 
 
 img.avatar {
-  padding: 10px;
-  height: 300px;
-  width: 300px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: -2px;
+  padding: 5px;
+  height: 120px;
+  width: 120px;
+  margin: auto;
+  margin-top: 30px;
   display: block;
-
+  border-radius: 50%;
+  border: 8px solid #00796B;
 }
 
 .container {
@@ -90,6 +91,16 @@ img.avatar {
 span.psw {
   float: right;
   padding-top: 0px;
+}
+
+#appTitle {
+  margin: auto;
+  width: 80%;
+  font-weight: bold;
+  font-size: 32px;
+  text-align: center;
+  margin-top: 10px;
+  color: #00796B;
 }
 
 /* The Modal (background) */
@@ -149,14 +160,14 @@ hr {
 }
 
 /* Change styles for cancel button and signup button on extra small screens */
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 800px) {
   .cancelbtn, .indexButtons {
     width: 100%;
   }
 }
 
 /* Change styles for span and cancel button on extra small screens */
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 800px) {
   span.psw {
     display: block;
     float: none;

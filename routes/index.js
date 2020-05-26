@@ -9,7 +9,7 @@ router.get('/', function(req, res, next) {
   if(req.session.username && req.session.loggedin){
     res.redirect('/home');
   }else {
-    res.render('index', {title: 'Login'});
+    res.render('index', {title: 'Login', layout: 'indexLayout.hbs'});
   }
 });
 

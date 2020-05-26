@@ -36,10 +36,10 @@ app.use(session({
 app.use(flash());
 
 let con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "sample"
+  host: "sql2.freemysqlhosting.net",
+  user: "sql2343318",
+  password: "gR1!dB2*",
+  database: "sql2343318"
 });
 
 con.connect(function(err){
