@@ -8,6 +8,7 @@
 .form-row {
     display: flex;
     margin-bottom: .5rem;
+    flex-wrap: wrap;
 }
 
 .form-item {
@@ -28,6 +29,7 @@
 
 .form-row-end {
     justify-content: flex-end;
+    margin-bottom: 50px;
 }
 
 .form-item > label {
@@ -61,4 +63,12 @@
 
 .form-item input:focus, .form-item select:focus, .form-item textarea:focus {
     border-color: var(--form-input-border-color-light);
+}
+
+@media screen and (max-width: 700px){
+    .form-item {
+        width: 100%;
+        padding: 10px 5px;
+        margin-left: 0;
+    }
 }

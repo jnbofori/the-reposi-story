@@ -30,17 +30,16 @@ router.post('/auth', function(req, res){
             res.redirect('/home');
           }else{
             console.log('Wrong Password');
-            res.render('index', { error: 'Invalid Password' });
+            res.render('index', { error: 'Invalid Password', layout: 'indexLayout.hbs' });
           }
         });
       } else{
         console.log('Incorrect Username and/or Password!');
-        res.render('index', {error: 'Invalid Username and/or Password'});
+        res.render('index', {error: 'Invalid Username and/or Password', layout: 'indexLayout.hbs'});
       }
     });
   } else{
-    res.send('Please enter Username and Password!');
-    res.end();
+    res.render('index', {error: 'Please enter Username and Password!', layout: 'indexLayout.hbs'});
   }
 });
 

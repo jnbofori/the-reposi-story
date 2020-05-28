@@ -53,3 +53,11 @@
     color: var(--color-btn-danger-text-dark);
     background-color: var(--color-btn-danger-background-dark);
 }
+
+@media screen and (max-width: 700px){
+    .btn-row {
+        align-items: flex-end;
+        float: right;
+        margin-left: 2rem;
+    }
+}

@@ -18,7 +18,7 @@
 
 body {
     background-color: white;
-    background-image: url("../images/light-bulb-on-white-panel.jpg");
+    /*background-image: url("../images/light-bulb-on-white-panel.jpg");*/
     background-size: cover;
     background-repeat: no-repeat;
     background-position: top;
@@ -40,3 +40,4 @@ body {
     font-size: 2rem;
     font-weight: 700;
 }
+
