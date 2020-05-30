@@ -1,13 +1,22 @@
 <header>
-    <nav class="header-nav">
-        <a class="header-title" href="/home">the Reposi-story</a>
-        <ul>
-            <li><a href="/authors">Authors</a></li>
-            <li><a href="/authors/new">Add Author</a></li>
-            <li><a href="/books">Books</a></li>
-            <li><a href="/books/new">Add Book</a></li>
-            <li><a href="/logout">Log out</a></li>
+    <div>
+        <img src="/images/dinosaur.svg">
+        <h2>the<br>reposi-story</h2>
+    </div>
+    <nav>
+        <ul class="header-nav-links" id="myTopnav">
+            <li class="link"><a href="/home">Home</a></li>
+            <li class="link"><a href="/posts">Poems</a></li>
+            <li class="link"><a href="/books">Short Stories</a></li>
+            <li class="link"><a href="/books">Blog Posts</a></li>
+            <li class="link"><a href="/books">Others</a></li>
+            <li class="link"><a href="/writers">Writers</a></li>
+            <li class="link"><a id="profile-link" href="/profile/{{sessUser}}">Profile</a></li>
+            <li class="link"><a href="/logout">Logout</a></li>
+            <li><a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                <i class="fa fa-bars"></i>
+            </a></li>
         </ul>
     </nav>
-    <hr class="header-line">
 </header>
+

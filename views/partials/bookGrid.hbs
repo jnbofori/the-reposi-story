@@ -1,7 +1,9 @@
 <div class="book-grid">
-{{#each books}}
-    <a href="/books/{{book_id}}">
-        <img class="book-cover" src="/images/uploads/{{cover_image_name}}">
-    </a>
-{{/each}}
+    <div>
+    <a href="/books/{{post_id}}">
+        <img class="book-cover" src="/images/uploads/{{cover_image_name}}"></a>
+        <div><b>{{title}}</b></div>
+        <div><b>Author:</b> {{fullname}}</div>
+        <p>"{{excerpt}}"</p>
+    </div>
 </div>

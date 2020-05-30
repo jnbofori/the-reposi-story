@@ -1,0 +1,19 @@
+{{> header}}
+
+<div class="inner-container">
+    {{err}}
+    {{#each user}}
+        <h2 class="page-header">{{fullname}}</h2>
+        <div class="btn-row">
+            <a class="btn btn-primary" href="/writers/{{user_id}}/edit">Edit</a>
+            <form method="POST" action="/writers/{{user_id}}?_method=DELETE">
+                <button class="btn btn-danger" type="submit">Delete</button>
+            </form>
+        </div>
+    {{/each}}
+
+    {{#if books}}
+        <h2>Books by Author</h2>
+        {{> bookGrid}}
+    {{/if}}
+</div>

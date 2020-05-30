@@ -1,13 +1,21 @@
 {{> header}}
 
-<!--<div class="inner-container">-->
-<!--<h3>Home Page</h3>-->
-<!--<p>Home page of app comes here</p>-->
-<!--<p>{{sessUser}}</p>-->
-<!--<br>-->
 <div class="inner-container">
 <h2 class="page-header">Recently Added</h2>
-{{> bookGrid}}
+    <h3>Poems</h3>
+    {{#each poems}}
+        {{> bookGrid}}
+    {{/each}}
+
+    <h3>Short Stories</h3>
+    {{#each shortStories}}
+        {{> bookGrid}}
+    {{/each}}
+
+    <h3>Blog Posts</h3>
+    {{#each blogs}}
+        {{> bookGrid}}
+    {{/each}}
 </div>
 
 

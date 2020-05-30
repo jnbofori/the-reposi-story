@@ -2,11 +2,11 @@
 
 <div class="inner-container">
 {{err}}
-{{#each authors}}
-<h2 class="page-header">{{author_name}}</h2>
+{{#each writers}}
+<h2 class="page-header">{{fullname}}</h2>
 <div class="btn-row">
-<a class="btn btn-primary" href="/authors/{{author_id}}/edit">Edit</a>
-<form method="POST" action="/authors/{{author_id}}?_method=DELETE">
+<a class="btn btn-primary" href="/writers/{{user_id}}/edit">Edit</a>
+<form method="POST" action="/writers/{{user_id}}?_method=DELETE">
     <button class="btn btn-danger" type="submit">Delete</button>
 </form>
 </div>

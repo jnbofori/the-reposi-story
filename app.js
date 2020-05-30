@@ -12,9 +12,10 @@ const logger = require('morgan');
 const cors = require('cors');
 
 var indexRouter = require('./routes/index');
-var authorsRouter = require('./routes/authors');
-var booksRouter = require('./routes/books');
+var writersRouter = require('./routes/writers');
+var postsRouter = require('./routes/posts');
 var homeRouter = require('./routes/home');
+var profileRouter = require('./routes/profile');
 
 var app = express();
 
@@ -38,10 +39,10 @@ app.use(session({
 app.use(flash());
 
 let con = mysql.createConnection({
-  host: "sql2.freemysqlhosting.net",
-  user: "sql2343318",
-  password: "gR1!dB2*",
-  database: "sql2343318"
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "sample"
 });
 
 con.connect(function(err){
@@ -53,9 +54,10 @@ global.con = con;
 global.mysql = mysql;
 
 app.use('/', indexRouter);
-app.use('/authors', authorsRouter);
-app.use('/books', booksRouter);
+app.use('/writers', writersRouter);
+app.use('/posts', postsRouter);
 app.use('/home', homeRouter);
+app.use('/profile', profileRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

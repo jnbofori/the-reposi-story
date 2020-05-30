@@ -13,6 +13,14 @@ router.get('/', function(req, res, next) {
   }
 });
 
+router.get('/gotoSignUp', function (req, res) {
+  if(req.session.username && req.session.loggedin){
+    res.redirect('/home');
+  }else {
+    res.render('signUp', {title: 'Sign Up', layout: 'indexLayout'})
+  }
+});
+
 /*Authenticate user. */
 router.post('/auth', function(req, res){
   console.log('POST request received at /auth');
@@ -26,6 +34,7 @@ router.post('/auth', function(req, res){
           if(reslt){
             req.session.loggedin = true;
             req.session.username = username;
+            req.session.user = result[0].user_id;
             console.log("User logged in");
             res.redirect('/home');
           }else{
@@ -51,7 +60,7 @@ router.post('/signUp', function(req,res){
         function (err,reslt,fields) {
           if(reslt.length > 0){
             req.flash('info', 'This username and/or email is already in use');
-            res.redirect('/');
+            res.redirect('/gotoSignUp');
           }else{
             con.query('INSERT INTO users(fullname,username,email,password,activated) VALUES (?,?,?,?,?)',
                 [req.body.fullname, req.body.username, req.body.email, hash, 1],

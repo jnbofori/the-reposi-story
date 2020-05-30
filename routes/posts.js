@@ -22,7 +22,7 @@ const upload = multer({
 }).single('cover');
 
 
-/* GET all books. */
+/* GET all posts. */
 router.get('/', function(req, res, next) {
     if(!req.session.username && !req.session.loggedin){res.redirect('/');}else {
         let title = req.query.title;
@@ -55,12 +55,12 @@ router.get('/', function(req, res, next) {
 
             con.query(qry, function (err, result, fields) {
                 if (err) throw err;
-                res.render('books/indexBook', {books: result});
+                res.render('posts/indexPoems', {books: result});
             })
         } else {
-            con.query('SELECT * FROM books', function (err, result, fields) {
+            con.query('SELECT * FROM posts', function (err, result, fields) {
                 if (err) throw err;
-                res.render('books/indexBook', {books: result});
+                res.render('posts/indexPoems', {books: result});
             })
         }
     }
@@ -70,9 +70,9 @@ router.get('/', function(req, res, next) {
 /* New Book form route */
 router.get('/new', function (req, res) {
     if(!req.session.username && !req.session.loggedin){res.redirect('/');}else {
-        con.query('SELECT * FROM authors', function (err, result, fields) {
+        con.query('SELECT * FROM writers', function (err, result, fields) {
             if (err) throw err;
-            res.render('books/newBook', {authors: result});
+            res.render('posts/newBook', {authors: result});
         })
     }
 });
@@ -81,7 +81,7 @@ router.get('/new', function (req, res) {
 router.post('/', function (req, res) {
     upload(req, res, (err) => {
         if(err){
-            res.render('books/newBook',{msg: err});
+            res.render('posts/newBook',{msg: err});
         }else{
             const fileName = req.file != null ? req.file.filename : null
 
@@ -93,13 +93,13 @@ router.post('/', function (req, res) {
             let description = req.body.description;
 
             if(cover == null){
-                res.render('books/newBook', {msg: 'Error: Wrong file type for Cover Image'});
+                res.render('posts/newBook', {msg: 'Error: Wrong file type for Cover Image'});
             }else {
-                con.query('INSERT INTO books(title,description,publish_date,page_count,cover_image_name,author_id) VALUES (?,?,?,?,?,?)',
+                con.query('INSERT INTO posts(title,description,publish_date,page_count,cover_image_name,author_id) VALUES (?,?,?,?,?,?)',
                     [title, description, publish_date, page_count, cover, author],
                     function (err, result) {
                         if (err) {deleteImage(cover)};
-                        res.status(200).redirect('/books');
+                        res.status(200).redirect('/posts');
                     });
             }
         }
@@ -109,11 +109,11 @@ router.post('/', function (req, res) {
 /* Show book page */
 router.get('/:id', function (req, res) {
     if(!req.session.username && !req.session.loggedin){res.redirect('/');}else {
-        let qry = 'SELECT books.book_id,books.title,books.description,books.publish_date,books.page_count,books.cover_image_name,' +
-            ' authors.author_name,authors.author_id FROM books INNER JOIN authors ON authors.author_id = books.author_id WHERE books.book_id = ' + req.params.id;
+        let qry = 'SELECT posts.book_id,posts.title,posts.description,posts.publish_date,posts.page_count,posts.cover_image_name,' +
+            ' writers.author_name,writers.author_id FROM posts INNER JOIN writers ON writers.author_id = posts.author_id WHERE posts.book_id = ' + req.params.id;
         con.query(qry, function (err, result) {
             if (err) throw err;
-            res.render('books/showBook', {books: result});
+            res.render('posts/showBook', {books: result});
         });
     }
 });
@@ -121,20 +121,20 @@ router.get('/:id', function (req, res) {
 /*  Edit Book Form Route */
 router.get('/:id/edit', (req,res) => {
     if(!req.session.username && !req.session.loggedin){res.redirect('/');}else {
-        let qry = 'SELECT books.book_id,books.title,books.description,books.publish_date,books.page_count,books.cover_image_name,' +
-            ' authors.author_name,authors.author_id FROM books INNER JOIN authors ON authors.author_id = books.author_id WHERE books.book_id = ' + req.params.id;
+        let qry = 'SELECT posts.book_id,posts.title,posts.description,posts.publish_date,posts.page_count,posts.cover_image_name,' +
+            ' writers.author_name,writers.author_id FROM posts INNER JOIN writers ON writers.author_id = posts.author_id WHERE posts.book_id = ' + req.params.id;
         con.query(qry, function (err, result) {
             if (err) throw err;
-            res.render('books/editBook', {results: result});
+            res.render('posts/editBook', {results: result});
         });
     }
 });
 
-/* Update books in database */
+/* Update posts in database */
 router.put('/:id', function (req, res) {
     upload(req, res, function (err) {
         if(err){
-            res.render('books/editBook',{msg: err});
+            res.render('posts/editBook',{msg: err});
         }else{
             const fileName = req.file != null ? req.file.filename : null
 
@@ -156,7 +156,7 @@ router.put('/:id', function (req, res) {
 
             con.query(qry, function(err,result){
                 if(err) throw err; //and delete uploaded image
-                res.status(200).redirect('/books/'+req.params.id);
+                res.status(200).redirect('/posts/'+req.params.id);
             });
         }
     })
@@ -164,15 +164,15 @@ router.put('/:id', function (req, res) {
 
 /*Delete Book from database*/
 router.delete('/:id', (req, res) => {
-    con.query('SELECT cover_image_name FROM books WHERE book_id = '+req.params.id,function(err, result){
+    con.query('SELECT cover_image_name FROM posts WHERE book_id = '+req.params.id,function(err, result){
         if(err) throw err;
 
         let filename = result[0].cover_image_name;
         deleteImage(filename);
-        con.query('DELETE FROM books WHERE book_id = ?',[req.params.id],
+        con.query('DELETE FROM posts WHERE book_id = ?',[req.params.id],
             function(err,result){
                 if(err) throw err;
-                res.status(200).redirect('/books');
+                res.status(200).redirect('/posts');
             });
     })
 });

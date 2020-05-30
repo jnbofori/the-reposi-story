@@ -5,39 +5,42 @@
 @import 'shared/form.css';
 @import 'shared/author.css';
 @import 'shared/books.css';
+@import url("https://fonts.googleapis.com/css?family=Open+Sans&display=swap");
 
 :root {
-    font-family: 'Calibri';
-    font-size: 20px;
-    color: var(--color-text-light);
-}
-
-*, *::before, *::after {
-    box-sizing: border-box;
+    font-family: "Open Sans", sans-serif;
 }
 
 body {
-    background-color: white;
-    /*background-image: url("../images/light-bulb-on-white-panel.jpg");*/
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: top;
+    margin: 0;
 }
 
-.container {
-    max-width: 1200px;
-    margin: auto;
-    margin-bottom: 3rem;
-    z-index: 2;
-}
+/**, *::before, *::after {*/
+/*    box-sizing: border-box;*/
+/*}*/
 
-.inner-container {
-    margin: 0 2rem;
-}
+/*body {*/
+/*    background-color: white;*/
+/*    !*background-image: url("../images/light-bulb-on-white-panel.jpg");*!*/
+/*    background-size: cover;*/
+/*    background-repeat: no-repeat;*/
+/*    background-position: top;*/
+/*}*/
 
-.page-header {
-    font-family: 'Calibri';
-    font-size: 2rem;
-    font-weight: 700;
-}
+/*.container {*/
+/*    max-width: 1200px;*/
+/*    margin: auto;*/
+/*    margin-bottom: 3rem;*/
+/*    z-index: 2;*/
+/*}*/
+
+/*.inner-container {*/
+/*    margin: 0 2rem;*/
+/*}*/
+
+/*.page-header {*/
+/*    font-family: 'Calibri';*/
+/*    font-size: 2rem;*/
+/*    font-weight: 700;*/
+/*}*/
 

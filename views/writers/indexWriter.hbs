@@ -12,9 +12,9 @@
 </script>
 
 <div class="inner-container">
-<h2 class="page-header">Search Authors</h2>
+<h2 class="page-header">Search Writers</h2>
 <div class="error" id="error">{{messages.err}}</div>
-<form action="/authors" method="GET">
+<form action="/writers" method="GET">
     <div class="form-row">
         <div class="form-item">
             <label for="name">Name</label>
@@ -26,19 +26,15 @@
     </div>
 </form>
 <br>
-{{#each authors}}
+{{#each writers}}
     <div class="author-row">
         <div class="author-item">
-            <div>{{author_name}}</div>
-            <div>{{author_description}}</div>
+            <div>{{fullname}}</div>
+            <div>{{bio}}</div>
         </div>
 
     <div class="btn-row">
-    <a class="btn btn-primary" href="/authors/{{author_id}}">View</a>
-    <a class="btn btn-primary" href="/authors/{{author_id}}/edit">Edit</a>
-    <form method="POST" action="/authors/{{author_id}}?_method=DELETE">
-        <button class="btn btn-danger" type="submit">Delete</button>
-    </form>
+    <a class="btn btn-primary" href="/writers/{{user_id}}">View</a>
     </div>
     </div>
 {{/each}}
