@@ -22,53 +22,32 @@ const upload = multer({
 }).single('cover');
 
 
-/* GET all posts. */
-router.get('/', function(req, res, next) {
+/* GET all poems. */
+router.get('/:type', function(req, res, next) {
     if(!req.session.username && !req.session.loggedin){res.redirect('/');}else {
-        let title = req.query.title;
-        let publishedAfter = req.query.published_after;
-        let publishedBefore = req.query.published_before;
+        let search = req.query.search;
+        let type = setType(req.params.type);
+        if (search) {
+            let searchQuery = '%' + search + '%';
+            let qry = `SELECT * FROM posts INNER JOIN users ON users.user_id = posts.user_id WHERE type = ${mysql.escape(type)}
+             AND (title LIKE ${mysql.escape(searchQuery)} OR content LIKE ${mysql.escape(searchQuery)})`;
 
-        if (title || publishedAfter || publishedBefore) {
-            let nd = ` AND`, end = ` AND`;
-            let titlepart = ` title LIKE '%` + title + `%'`;
-            let publishedafterPrt = ` publish_date > ` + `'` + publishedAfter + `'`;
-            let publishedbeforePrt = ` publish_date < ` + `'` + publishedBefore + `'`;
-
-            if (!title) {
-                titlepart = '';
-                nd = '';
-            }
-            if (!publishedAfter) {
-                publishedafterPrt = '';
-                nd = '';
-            }
-            if (!publishedBefore) {
-                publishedbeforePrt = '';
-                end = '';
-            }
-            if (!title && !publishedAfter) {
-                end = '';
-            }
-
-            let qry = `SELECT * FROM books WHERE` + titlepart + nd + publishedafterPrt + end + publishedbeforePrt;
-
-            con.query(qry, function (err, result, fields) {
+            con.query(qry, function (err, result) {
                 if (err) throw err;
-                res.render('posts/indexPoems', {books: result});
+                res.render(`posts/${req.params.type}Index`, {results: result, sessUser: req.session.user});
             })
         } else {
-            con.query('SELECT * FROM posts', function (err, result, fields) {
+            con.query(`SELECT * FROM posts INNER JOIN users ON users.user_id = posts.user_id WHERE type = ${mysql.escape(type)}`, function (err, result) {
                 if (err) throw err;
-                res.render('posts/indexPoems', {books: result});
+                res.render(`posts/${req.params.type}Index`, {results: result, sessUser: req.session.user});
             })
         }
     }
 });
 
 
-/* New Book form route */
-router.get('/new', function (req, res) {
+// /* New Book form route */
+router.get('/:type/new', function (req, res) {
     if(!req.session.username && !req.session.loggedin){res.redirect('/');}else {
         con.query('SELECT * FROM writers', function (err, result, fields) {
             if (err) throw err;
@@ -107,19 +86,20 @@ router.post('/', function (req, res) {
 });
 
 /* Show book page */
-router.get('/:id', function (req, res) {
-    if(!req.session.username && !req.session.loggedin){res.redirect('/');}else {
-        let qry = 'SELECT posts.book_id,posts.title,posts.description,posts.publish_date,posts.page_count,posts.cover_image_name,' +
-            ' writers.author_name,writers.author_id FROM posts INNER JOIN writers ON writers.author_id = posts.author_id WHERE posts.book_id = ' + req.params.id;
-        con.query(qry, function (err, result) {
-            if (err) throw err;
-            res.render('posts/showBook', {books: result});
-        });
-    }
+router.get('/:type/:id/show', function (req, res) {
+    console.log("GEt request received at /:type/:id")
+    // if(!req.session.username && !req.session.loggedin){res.redirect('/');}else {
+    //     let qry = 'SELECT posts.book_id,posts.title,posts.description,posts.publish_date,posts.page_count,posts.cover_image_name,' +
+    //         ' writers.author_name,writers.author_id FROM posts INNER JOIN writers ON writers.author_id = posts.author_id WHERE posts.book_id = ' + req.params.id;
+    //     con.query(qry, function (err, result) {
+    //         if (err) throw err;
+    //         res.render('posts/showBook', {books: result});
+    //     });
+    // }
 });
 
 /*  Edit Book Form Route */
-router.get('/:id/edit', (req,res) => {
+router.get('/:type/:id/edit', (req,res) => {
     if(!req.session.username && !req.session.loggedin){res.redirect('/');}else {
         let qry = 'SELECT posts.book_id,posts.title,posts.description,posts.publish_date,posts.page_count,posts.cover_image_name,' +
             ' writers.author_name,writers.author_id FROM posts INNER JOIN writers ON writers.author_id = posts.author_id WHERE posts.book_id = ' + req.params.id;
@@ -181,6 +161,20 @@ function deleteImage(filename){
     fs.unlink(path.join('public/images/uploads/',filename), (err)=>{
         if(err) console.error(err)
     })
+}
+
+function setType(params){
+    let type;
+    if(params === 'poems'){
+        type = 'Poem';
+    }else if(params === 'stories'){
+        type = 'Short Story'
+    }else if(params === 'blogs'){
+        type = 'Blog'
+    }else {
+        type = 'Others'
+    }
+    return type;
 }
 
 

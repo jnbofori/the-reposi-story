@@ -9,13 +9,11 @@ router.get('/', function(req, res, next) {
             con.query(`SELECT * FROM users WHERE fullname LIKE ` + mysql.escape(writerName),
                 function (err, result) {
                     if (err) throw err;
-                    console.log(result);
                     res.render('writers/indexWriter', {writers: result, sessUser: req.session.user})
                 })
         } else {
             con.query('SELECT * FROM users', function (err, result) {
                 if (err) throw err;
-                console.log(result);
                 res.render('writers/indexWriter', {writers: result, sessUser: req.session.user});
             })
         }
