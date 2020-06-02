@@ -23,7 +23,7 @@ nav a{
 .header-nav-links {
     width: 50%;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
     list-style: none;
 }

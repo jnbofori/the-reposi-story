@@ -1,0 +1,96 @@
+{{> header}}
+
+<div class="inner-container">
+    <p>{{error}}</p>
+    {{#each user}}
+        <form onsubmit="return emailVal()" action="/writers/{{user_id}}/email?_method=PUT" method="POST">
+            <h3>Update Account Details</h3>
+            <hr>
+            <div class="form-item">
+                <label for="email"><b>Email</b></label><span class="acc-edit-error">Invalid Email</span>
+                <input type="text" id="email" name="email" required>
+            </div>
+            <div class="form-row form-row-end btn-row">
+                <button class="btn btn-primary" type="submit">Update Email</button>
+            </div>
+        </form>
+
+        <form onsubmit="return validations()" action="/writers/{{user_id}}/password?_method=PUT" method="POST">
+            <hr>
+            <div class="form-row">
+                <div class="form-item">
+                    <label for="currPassword"><b>Current Password</b></label>
+                    <input type="password" name="currPassword" required>
+                </div>
+                <div class="form-item">
+                    <label for="newPassword"><b>New Password</b></label><span class="acc-edit-error">Password too short</span>
+                    <input type="password" id="password" name="newPassword">
+                </div>
+                <div class="form-item">
+                    <label for="rpt-password"><b>Repeat New Password</b></label><span class="acc-edit-error">Passwords don't match</span>
+                    <input type="password" id="psw-repeat" name="rptPassword">
+                </div>
+            </div>
+
+            <div class="form-row form-row-end btn-row">
+                <button class="btn btn-primary" type="submit">Change Password</button>
+            </div>
+        </form>
+    {{/each}}
+</div>
+
+<script>
+    let mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+    let email = document.getElementById("email");
+    let password = document.getElementById("password");
+    let psw_repeat = document.getElementById("psw-repeat");
+    let errors = document.getElementsByClassName("acc-edit-error");
+
+    function validations() {
+        for (let i = 0; i < errors.length; i++) {
+            if (errors[i].style.display = "inline") {
+                errors[i].style.display = "none";
+            }
+        }
+
+        if(password.value.length<8){
+            errors[1].style.display ="inline";
+            return false;
+        }else if(password.value != psw_repeat.value) {
+            errors[2].style.display = "inline";
+            return false;
+        }
+    }
+
+    function emailVal(){
+        for (let i = 0; i < errors.length; i++) {
+            if (errors[i].style.display = "inline") {
+                errors[i].style.display = "none";
+            }
+        }
+
+        if(!email.value.match(mailformat)){
+            errors[0].style.display ="inline";
+            return false;
+        }
+    }
+
+    email.onkeyup = function(){
+        if(!email.value.match(mailformat)){
+            errors[0].style.display ="inline";
+        }else{errors[0].style.display ="none";}
+    }
+
+    password.onkeyup = function(){
+        if(password.value.length<8){
+            errors[1].style.display ="inline";
+        }else{errors[1].style.display ="none";}
+    };
+
+    psw_repeat.onkeyup = function(){
+        if(password.value != psw_repeat.value){
+            errors[2].style.display ="inline";
+        }else{errors[2].style.display ="none";}
+    };
+</script>

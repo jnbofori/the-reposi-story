@@ -24,16 +24,16 @@ router.get('/gotoSignUp', function (req, res) {
 /*Authenticate user. */
 router.post('/auth', function(req, res){
   console.log('POST request received at /auth');
-  let username = req.body.uname;
+  let email = req.body.email;
   let password = req.body.psw;
 
-  if(username && password){
-    con.query('SELECT * FROM users WHERE username = ?', [username], function(err,result,fields){
+  if(email && password){
+    con.query('SELECT * FROM users WHERE email = ?', [email], function(err,result,fields){
       if (result.length > 0) {
         bcrypt.compare(password, result[0].password, function(err, reslt) {
           if(reslt){
             req.session.loggedin = true;
-            req.session.username = username;
+            req.session.username = email;
             req.session.user = result[0].user_id;
             console.log("User logged in");
             res.redirect('/home');
@@ -44,11 +44,11 @@ router.post('/auth', function(req, res){
         });
       } else{
         // console.log('Incorrect Username and/or Password!');
-        res.render('index', {error: 'Invalid Username and/or Password', layout: 'indexLayout.hbs'});
+        res.render('index', {error: 'Invalid Email and/or Password', layout: 'indexLayout.hbs'});
       }
     });
   } else{
-    res.render('index', {error: 'Please enter Username and Password!', layout: 'indexLayout.hbs'});
+    res.render('index', {error: 'Please enter Email and Password!', layout: 'indexLayout.hbs'});
   }
 });
 

@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
     if(!req.session.username && !req.session.loggedin){res.redirect('/')}else {
         if (req.query.name != null && req.query.name !== '') {
             let writerName = '%' + req.query.name + '%';
-            con.query(`SELECT * FROM users WHERE fullname LIKE ` + mysql.escape(writerName),
+            con.query(`SELECT * FROM users WHERE fullname LIKE ${mysql.escape(writerName)} OR username LIKE ${mysql.escape(writerName)}`,
                 function (err, result) {
                     if (err) throw err;
                     res.render('writers/indexWriter', {title: 'Explore Writers', writers: result, sessUser: req.session.user})
@@ -84,13 +84,79 @@ router.delete('/:id', (req, res) => {
 });
 
 
+router.get('/:id/account', (req, res) => {
+    if(!req.session.username && !req.session.loggedin){res.redirect('/')}else {
+        con.query('SELECT * FROM users WHERE user_id = ?', [req.params.id], function (err, result) {
+            if (err) throw err;
+            res.render('updateAccount', {title: 'Update Account Details', sessUser: req.session.user, user: result})
+        })
+    }
+});
+
+
+router.put('/:id/email', (req, res) => {
+    let email = req.body.email;
+    let id = req.params.id;
+
+    con.query(`SELECT * FROM users WHERE email = ?`,[email], function (err, result) {
+        if (result.length > 0){
+            if(result[0].user_id == id){
+                updateEmail(email, id, res);
+            }else{
+                res.render(`updateAccount`, {
+                    title: 'Update Account Details',
+                    sessUser: req.session.user,
+                    user: result, error: 'Email Address Already in use'});
+            }
+        }else {
+            con.query(`SELECT * FROM users WHERE user_id = ?`, [id], function (err, rslt) {
+                updateEmail(email, id, res);
+            })
+        }
+    });
+});
+
+
+/* Update account details */
+router.put('/:id/password', (req, res) => {
+    let currPassword = req.body.currPassword;
+    let newPassword = req.body.newPassword;
+    let id = req.params.id;
+
+    con.query(`SELECT * FROM users WHERE user_id = ?`, [id], function (err, result) {
+        bcrypt.compare(currPassword, result[0].password, function (err, reslt) {
+            if(reslt){
+                bcrypt.hash(newPassword, 10, function (err, hash) {
+                    let qry = `UPDATE users SET password = ? WHERE user_id = ?`;
+                    con.query(qry,[hash, id],
+                        function(err){
+                            if(err) throw err;
+                            res.status(200).redirect('/profile/'+id);
+                        });
+                })
+            }else {
+                res.render(`updateAccount`, {title: 'Update Account Details', sessUser: req.session.user, user: result, error: 'Invalid Password'});
+            }
+        })
+    })
+});
+
+
 function update(name, bio, username, id, res) {
     let qry = `UPDATE users SET fullname = ?, bio = ?, username = ? WHERE user_id = ?`;
     con.query(qry,[name, bio, username, id],
-        function(err,result){
+        function(err){
             if(err) throw err;
             res.status(200).redirect('/writers/'+id);
         });
+}
+
+function updateEmail(email, id, res){
+    let qry = `UPDATE users SET email = ? WHERE user_id = ?`;
+    con.query(qry,[email, id], function(err){
+        if(err) throw err;
+        res.status(200).redirect('/profile/'+id);
+    });
 }
 
 
