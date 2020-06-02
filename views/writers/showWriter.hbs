@@ -12,9 +12,11 @@
 </div>
 {{/each}}
 
-{{#if books}}
+{{#if posts}}
     <h2>Books by Author</h2>
-    {{> bookGrid}}
+    {{#each posts}}
+        {{> bookGrid}}
+    {{/each}}
 {{/if}}
 </div>
 

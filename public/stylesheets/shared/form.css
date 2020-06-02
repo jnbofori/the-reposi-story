@@ -65,6 +65,13 @@
     border-color: var(--form-input-border-color-light);
 }
 
+.edit-error{
+    color: #B00020;
+    float: right;
+    font-size: 13px;
+    display: none;
+}
+
 @media screen and (max-width: 700px){
     .form-item {
         width: 100%;

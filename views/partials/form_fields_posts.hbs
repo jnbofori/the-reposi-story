@@ -1,0 +1,34 @@
+<div class="form-row" xmlns="http://www.w3.org/1999/html">
+    <div class="form-item">
+        <label for="title"><b>Title:</b></label>
+        <input type="text" name="title" value="{{title}}" required>
+    </div>
+    <div class="form-item">
+        <label for="type"><b>Type:</b></label>
+        <select name="type">
+            <option value="Poem">Poem</option>
+            <option value="Short Story">Short Story</option>
+            <option value="Blog">Blog</option>
+            <option value="Other">Other</option>
+        </select>
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="form-item form-item-no-grow">
+        <label for="cover"><b>Cover:</b></label>
+        <input type="file" name="cover">
+    </div>
+    <div class="form-item">
+        <label for="excerpt"><b>Excerpt:</b></label>
+        <textarea name="excerpt" required>{{excerpt}}</textarea>
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="form-item">
+        <label for="description"><b>Content:</b></label>
+        <textarea name="content" placeholder="Drag to adjust field size" required>{{content}}</textarea>
+    </div>
+</div>
+

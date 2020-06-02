@@ -54,6 +54,12 @@
     background-color: var(--color-btn-danger-background-dark);
 }
 
+.add-btn {
+    color: var(--color-primary);
+    width: 300px;
+    height: 300px;
+}
+
 @media screen and (max-width: 700px){
     .btn-row {
         align-items: flex-end;

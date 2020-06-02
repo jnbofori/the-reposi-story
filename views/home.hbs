@@ -2,20 +2,21 @@
 
 <div class="inner-container">
 <h2 class="page-header">Recently Added</h2>
-    <h3>Poems</h3>
-    {{#each poems}}
-        {{> bookGrid}}
-    {{/each}}
+    <a href="/posts/new" class="add-btn"><i class="fa fa-plus-circle"></i></a>
+        <h3>Poems</h3>
+        {{#each poems}}
+            {{> bookGrid}}
+        {{/each}}
 
-    <h3>Short Stories</h3>
-    {{#each shortStories}}
-        {{> bookGrid}}
-    {{/each}}
+        <h3>Short Stories</h3>
+        {{#each shortStories}}
+            {{> bookGrid}}
+        {{/each}}
 
-    <h3>Blog Posts</h3>
-    {{#each blogs}}
-        {{> bookGrid}}
-    {{/each}}
+        <h3>Blog Posts</h3>
+        {{#each blogs}}
+            {{> bookGrid}}
+        {{/each}}
 </div>
 
 

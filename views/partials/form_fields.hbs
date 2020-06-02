@@ -1,10 +1,19 @@
 <div class="form-row">
     <div class="form-item">
-        <label for="name"><b>Name</b></label>
-        <input type="text" name="name" required>
+        <label for="name"><b>Name</b></label><span class="edit-error">Invalid name</span>
+        <input type="text" name="name" id="fullname" value="{{fullname}}" required>
     </div>
     <div class="form-item">
-        <label for="description"><b>Description</b></label>
-        <input type="text" name="description" required>
+        <label for="bio"><b>Bio</b></label>
+        <input type="text" name="bio" value="{{bio}}" required>
+    </div>
+    <div class="form-item">
+        <label for="bio"><b>Username</b></label><span class="edit-error">Username too short</span>
+        <input type="text" name="username" id="username" value="{{username}}" required>
     </div>
 </div>
+
+
+
+
+

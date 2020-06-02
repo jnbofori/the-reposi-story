@@ -38,12 +38,12 @@ router.post('/auth', function(req, res){
             console.log("User logged in");
             res.redirect('/home');
           }else{
-            console.log('Wrong Password');
+            // console.log('Wrong Password');
             res.render('index', { error: 'Invalid Password', layout: 'indexLayout.hbs' });
           }
         });
       } else{
-        console.log('Incorrect Username and/or Password!');
+        // console.log('Incorrect Username and/or Password!');
         res.render('index', {error: 'Invalid Username and/or Password', layout: 'indexLayout.hbs'});
       }
     });
