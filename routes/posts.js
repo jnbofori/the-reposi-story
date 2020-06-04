@@ -83,16 +83,23 @@ router.post('/', function (req, res) {
     });
 });
 
+
 /* Show book page */
 router.get('/:id/show', function (req, res) {
     if(!req.session.username && !req.session.loggedin){res.redirect('/');}else {
         let qry = `SELECT * FROM posts INNER JOIN users ON users.user_id = posts.user_id WHERE posts.post_id = ${req.params.id}`;
         con.query(qry, function (err, result) {
             if (err) throw err;
-            res.render('posts/showPost', {posts: result, sessUser: req.session.user});
+            con.query(`SELECT COUNT(post_id) AS NumberOfLikes FROM likes WHERE post_id = ?`, [req.params.id],
+                function (err, reslt) {
+                if (err) throw err;
+                    console.log(reslt)
+                res.render('posts/showPost', {posts: result, sessUser: req.session.user, likes: reslt});
+            })
         });
     }
 });
+
 
 /*  Edit Book Form Route */
 router.get('/:id/edit', (req,res) => {
@@ -105,6 +112,7 @@ router.get('/:id/edit', (req,res) => {
         });
     }
 });
+
 
 /* Update posts in database */
 router.put('/:id', function (req, res) {
@@ -151,6 +159,40 @@ router.delete('/:id', (req, res) => {
             });
     })
 });
+
+
+/* route to like post */
+router.post('/:id/like', (req, res) =>{
+    con.query('SELECT * FROM likes WHERE post_id = ? AND user_id =?', [req.params.id, req.session.user],
+        function (err, result) {
+        if (result.length > 0){
+            con.query('DELETE FROM likes WHERE post_id = ? AND user_id = ?', [req.params.id, req.session.user],
+                function () {
+                    res.end();
+                })
+        }else {
+            con.query('INSERT INTO likes(post_id,user_id) VALUES (?,?)', [req.params.id, req.session.user],
+                function (err, reslt) {
+                    if(err) throw err;
+                    res.send(reslt);
+                })
+        }
+        })
+});
+
+
+/* check if user has liked post */
+router.get('/:id/checklike', function (req, res) {
+    con.query(`SELECT * FROM likes WHERE post_id = ? AND user_id = ?`, [req.params.id, req.session.user],
+        function (err, result) {
+            if(result.length > 0){
+                res.send(result)
+            }else {
+                res.end;
+            }
+        })
+});
+
 
 function deleteImage(filename){
     fs.unlink(path.join('public/images/uploads/',filename), (err)=>{

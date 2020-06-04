@@ -8,7 +8,29 @@
         for(let i=0; i<4; i++) {
             date.innerHTML = date.innerHTML + split_str[i]+" ";
         }
-    })
+    });
+
+    checkLike();
+
+    {{#each posts}}
+    function like() {
+        document.getElementById('hrt').style.color = "red";
+
+        $.post('/posts/{{post_id}}/like', function (data) {
+            if(!data){
+            document.getElementById('hrt').style.color = 'darkgrey';
+            }
+        });
+    }
+
+    function checkLike() {
+        $.get('/posts/{{post_id}}/checklike', function (data) {
+            if(data){
+                document.getElementById('hrt').style.color = 'red';
+            }
+        })
+    }
+    {{/each}}
 </script>
 
 {{> header}}
@@ -19,14 +41,18 @@
 <div>
     <img class="book-cover" src="/images/uploads/{{cover_image_name}}">
     <div class="book-details-btn-grid">
-
         <form method="POST" action="/posts/{{post_id}}?_method=DELETE">
             <button class="btn btn-danger" type="submit">Delete</button>
         </form>
 
         <a class="btn btn-primary book-details-author-button" href="/writers/{{user_id}}">View Author</a>
+
+        <div id="hrt" onclick="like()"><i class="fa fa-heart"></i></div>
+{{/each}}
     </div>
+    {{#each likes}}<div><span id="likes">Likes: {{NumberOfLikes}}</span></div>{{/each}}
 </div>
+{{#each posts}}
 <div class="book-details-grid">
     <div class="book-details-label">Author:</div>
     <div>{{fullname}}</div>

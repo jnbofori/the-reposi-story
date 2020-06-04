@@ -39,6 +39,7 @@ router.get('/:id', (req, res) => {
     }
 });
 
+
 /*  Edit writer Form Route */
 router.get('/:id/edit', (req,res) => {
     if(!req.session.username && !req.session.loggedin){res.redirect('/')}else {
@@ -48,6 +49,7 @@ router.get('/:id/edit', (req,res) => {
         });
     }
 });
+
 
 /* Update writer in database */
 router.put('/:id', (req,res) => {
@@ -88,7 +90,7 @@ router.get('/:id/account', (req, res) => {
     if(!req.session.username && !req.session.loggedin){res.redirect('/')}else {
         con.query('SELECT * FROM users WHERE user_id = ?', [req.params.id], function (err, result) {
             if (err) throw err;
-            res.render('updateAccount', {title: 'Update Account Details', sessUser: req.session.user, user: result})
+            res.render('profile/updateAccount', {title: 'Update Account Details', sessUser: req.session.user, user: result})
         })
     }
 });
@@ -103,7 +105,7 @@ router.put('/:id/email', (req, res) => {
             if(result[0].user_id == id){
                 updateEmail(email, id, res);
             }else{
-                res.render(`updateAccount`, {
+                res.render(`profile/updateAccount`, {
                     title: 'Update Account Details',
                     sessUser: req.session.user,
                     user: result, error: 'Email Address Already in use'});
@@ -135,7 +137,11 @@ router.put('/:id/password', (req, res) => {
                         });
                 })
             }else {
-                res.render(`updateAccount`, {title: 'Update Account Details', sessUser: req.session.user, user: result, error: 'Invalid Password'});
+                res.render(`profile/updateAccount`, {
+                    title: 'Update Account Details',
+                    sessUser: req.session.user,
+                    user: result,
+                    error: 'Invalid Password'});
             }
         })
     })

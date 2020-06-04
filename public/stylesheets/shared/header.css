@@ -12,13 +12,13 @@ nav {
     min-height: 10vh;
     background: rgb(73, 79, 82);
     color: white;
-    position: sticky;
 }
 
 nav a{
     color: white;
     text-decoration: none;
 }
+
 
 .header-nav-links {
     width: 50%;
