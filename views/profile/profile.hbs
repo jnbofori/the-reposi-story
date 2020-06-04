@@ -3,10 +3,15 @@
 <div class="inner-container">
     {{err}}
     {{#each user}}
+        <img class="profile-image" src="/images/profileImages/{{profile}}" alt="Profile Picture"><!--Make sure to change class-->
         <h2 class="page-header">{{fullname}}</h2>
         <h3>{{username}}</h3>
         <h3>{{bio}}</h3>
+    {{/each}}
+       {{#each likes}}<div>Likes: {{NumberOfLikes}}</div>{{/each}}
+        <div>Posts: {{noOfPosts}}</div>
         <div class="btn-row">
+    {{#each user}}
             <a class="btn btn-primary" href="/writers/{{user_id}}/edit">Edit</a>
             <form method="POST" action="/writers/{{user_id}}?_method=DELETE">
                 <button class="btn btn-danger" type="submit">Delete</button>
@@ -15,9 +20,11 @@
         </div>
     {{/each}}
 
-    {{#if books}}
-        <h2>Books by Author</h2>
+    {{#if posts}}
+        <h2>Posts by Author</h2>
+    {{#each posts}}
         {{> bookGrid}}
+    {{/each}}
     {{/if}}
 </div>
 

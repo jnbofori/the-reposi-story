@@ -1,45 +1,10 @@
-<script type="text/javascript">
-    document.addEventListener('DOMContentLoaded', function () {
-        let date = document.getElementById("date");
-        let date_value = date.innerHTML;
-        let date_str = String(date_value);
-        let split_str = date_str.split(" ");
-        date.innerHTML = "";
-        for(let i=0; i<4; i++) {
-            date.innerHTML = date.innerHTML + split_str[i]+" ";
-        }
-    });
-
-    checkLike();
-
-    {{#each posts}}
-    function like() {
-        document.getElementById('hrt').style.color = "red";
-
-        $.post('/posts/{{post_id}}/like', function (data) {
-            if(!data){
-            document.getElementById('hrt').style.color = 'darkgrey';
-            }
-        });
-    }
-
-    function checkLike() {
-        $.get('/posts/{{post_id}}/checklike', function (data) {
-            if(data){
-                document.getElementById('hrt').style.color = 'red';
-            }
-        })
-    }
-    {{/each}}
-</script>
-
 {{> header}}
 <div class="inner-container">
 {{#each posts}}
 <h2 class="page-header">{{title}}</h2>
 <div class="book-details">
 <div>
-    <img class="book-cover" src="/images/uploads/{{cover_image_name}}">
+    <img class="book-cover" src="/images/uploads/{{cover_image_name}}" alt="Book Cover">
     <div class="book-details-btn-grid">
         <form method="POST" action="/posts/{{post_id}}?_method=DELETE">
             <button class="btn btn-danger" type="submit">Delete</button>
@@ -50,7 +15,7 @@
         <div id="hrt" onclick="like()"><i class="fa fa-heart"></i></div>
 {{/each}}
     </div>
-    {{#each likes}}<div><span id="likes">Likes: {{NumberOfLikes}}</span></div>{{/each}}
+    {{#each likes}}<div>Likes: <span id="likes">{{NumberOfLikes}}</span></div>{{/each}}
 </div>
 {{#each posts}}
 <div class="book-details-grid">
@@ -66,5 +31,46 @@
 {{/each}}
 </div>
 </div>
+
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        let date = document.getElementById("date");
+        let date_value = date.innerHTML;
+        let date_str = String(date_value);
+        let split_str = date_str.split(" ");
+        date.innerHTML = "";
+        for(let i=0; i<4; i++) {
+            date.innerHTML = date.innerHTML + split_str[i]+" ";
+        }
+    });
+
+    checkLike();
+
+        {{#each posts}}
+        function like() {
+            document.getElementById('hrt').style.color = "red";
+            let likes = document.getElementById('likes');
+            let no = parseInt(likes.innerText) + 1;
+            likes.innerText = String(no);
+
+            $.post('/posts/{{post_id}}/like', function (data) {
+                if(!data){
+                    document.getElementById('hrt').style.color = 'darkgrey';
+                    no = parseInt(likes.innerText) - 2;
+                    likes.innerText = String(no);
+                }
+            });
+        }
+
+        function checkLike() {
+            $.get('/posts/{{post_id}}/checklike', function (data) {
+                if(data){
+                    document.getElementById('hrt').style.color = 'red';
+                }
+            })
+        }
+        {{/each}}
+</script>
 
 

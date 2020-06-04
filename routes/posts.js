@@ -31,7 +31,7 @@ router.get('/new', function (req, res) {
 
 
 /* GET all posts. */
-router.get('/:type', function(req, res, next) {
+router.get('/:type', function(req, res) {
     if(!req.session.username && !req.session.loggedin){res.redirect('/');}else {
         let search = req.query.search;
         let type = setType(req.params.type);
@@ -74,8 +74,8 @@ router.post('/', function (req, res) {
             }else {
                 con.query('INSERT INTO posts(title,type,content,excerpt,cover_image_name,user_id) VALUES (?,?,?,?,?,?)',
                     [title, type, content, excerpt, cover, userID],
-                    function (err, result) {
-                        if (err) {deleteImage(cover)};
+                    function (err) {
+                        if (err) {deleteImage(cover)}
                         res.status(200).redirect(`/profile/${userID}`);
                     });
             }
@@ -93,7 +93,6 @@ router.get('/:id/show', function (req, res) {
             con.query(`SELECT COUNT(post_id) AS NumberOfLikes FROM likes WHERE post_id = ?`, [req.params.id],
                 function (err, reslt) {
                 if (err) throw err;
-                    console.log(reslt)
                 res.render('posts/showPost', {posts: result, sessUser: req.session.user, likes: reslt});
             })
         });
@@ -101,13 +100,12 @@ router.get('/:id/show', function (req, res) {
 });
 
 
-/*  Edit Book Form Route */
+/*  Edit Posts Form Route */
 router.get('/:id/edit', (req,res) => {
     if(!req.session.username && !req.session.loggedin){res.redirect('/');}else {
         let qry = 'SELECT * FROM posts INNER JOIN users ON users.user_id = posts.user_id WHERE posts.post_id = ' + req.params.id;
         con.query(qry, function (err, result) {
             if (err) throw err;
-            console.log(result)
             res.render('posts/editPosts', {results: result, sessUser: req.session.user});
         });
     }
@@ -118,7 +116,7 @@ router.get('/:id/edit', (req,res) => {
 router.put('/:id', function (req, res) {
     upload(req, res, function (err) {
         if(err){
-            res.render('posts/editPosta',{msg: err, sessUser: req.session.user});
+            res.render('posts/editPosts',{msg: err, sessUser: req.session.user});
         }else{
             const fileName = req.file != null ? req.file.filename : null;
 
@@ -135,7 +133,7 @@ router.put('/:id', function (req, res) {
             let qry = `UPDATE posts SET title = ${mysql.escape(title)}, type = ${mysql.escape(type)}, 
             content = ${mysql.escape(content)}, excerpt = ${mysql.escape(excerpt)}${coverImg_prt} WHERE post_id = ${req.params.id}`;
 
-            con.query(qry, function(err,result){
+            con.query(qry, function(err){
                 if(err) throw err; //and delete uploaded image
                 res.status(200).redirect(`/posts/${req.params.id}/show`);
             });
@@ -152,7 +150,7 @@ router.delete('/:id', (req, res) => {
         let filename = result[0].cover_image_name;
 
         con.query('DELETE FROM posts WHERE post_id = ?',[req.params.id],
-            function(err,result){
+            function(err){
                 if(err) throw err;
                 deleteImage(filename);
                 res.status(200).redirect(`/profile/${req.session.user}`);

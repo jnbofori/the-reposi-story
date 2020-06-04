@@ -2,7 +2,6 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 var router = express.Router();
 
-let app = express();
 
 /* GET index/Login page. */
 router.get('/', function(req, res, next) {
@@ -28,7 +27,7 @@ router.post('/auth', function(req, res){
   let password = req.body.psw;
 
   if(email && password){
-    con.query('SELECT * FROM users WHERE email = ?', [email], function(err,result,fields){
+    con.query('SELECT * FROM users WHERE email = ?', [email], function(err,result){
       if (result.length > 0) {
         bcrypt.compare(password, result[0].password, function(err, reslt) {
           if(reslt){
@@ -57,14 +56,14 @@ router.post('/signUp', function(req,res){
   bcrypt.hash(req.body.password, 10, function(err, hash) {
 
     con.query('SELECT * FROM users WHERE username = ? OR email = ?', [req.body.username,req.body.email],
-        function (err,reslt,fields) {
+        function (err,reslt) {
           if(reslt.length > 0){
             req.flash('info', 'This username and/or email is already in use');
             res.redirect('/gotoSignUp');
           }else{
             con.query('INSERT INTO users(fullname,username,email,password,activated) VALUES (?,?,?,?,?)',
                 [req.body.fullname, req.body.username, req.body.email, hash, 1],
-                function(err,result){
+                function(err){
                   if(err) throw err;
                   res.status(200).redirect('/home');
                 });

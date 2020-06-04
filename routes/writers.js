@@ -1,9 +1,29 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
+const multer = require('multer');
+const path = require('path');
 var router = express.Router();
 
+const imageMimeTypes = ['image/jpeg', 'image/png', 'images/gif'];
+
+const storage = multer.diskStorage({
+    destination: './public/images/profileImages/',
+    filename: function(req, file, cb){
+        cb(null,file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
+});
+
+const upload = multer({
+    storage: storage,
+    limits:{fileSize: 1000000},
+    fileFilter: function(req, file, cb){
+        cb(null, imageMimeTypes.includes(file.mimetype))
+    }
+}).single('profile');
+
+
 /* GET all writers. */
-router.get('/', function(req, res, next) {
+router.get('/', function(req, res) {
     if(!req.session.username && !req.session.loggedin){res.redirect('/')}else {
         if (req.query.name != null && req.query.name !== '') {
             let writerName = '%' + req.query.name + '%';
@@ -26,14 +46,19 @@ router.get('/', function(req, res, next) {
 router.get('/:id', (req, res) => {
     if(!req.session.username && !req.session.loggedin){res.redirect('/')}else {
         con.query('SELECT * FROM users WHERE user_id = ' + mysql.escape(req.params.id), function (err, result) {
-            if (err) {
-                res.render('writers/showWriter', {err: 'Error retrieving Writer information', sessUser: req.session.user})
-            }
+            if (err) throw err;
             con.query('SELECT * FROM posts WHERE user_id = ' + mysql.escape(req.params.id), function (err, reslt) {
-                if (err) {
-                    res.render('writers/showWriter', {err: 'Error retrieving data', sessUser: req.session.user})
-                }else{
-                res.render('writers/showWriter', {writers: result, posts: reslt, large: true, sessUser: req.session.user});}
+                if (err) throw err;
+                con.query(`SELECT COUNT(likes.post_id) AS NumberOfLikes FROM posts INNER JOIN likes ON likes.post_id = posts.post_id WHERE posts.user_id = ?`,
+                    [req.params.id], function (err, rslt) {
+                res.render('writers/showWriter', {
+                    title: 'View Writer',
+                    writers: result,
+                    posts: reslt,
+                    likes: rslt,
+                    noOfPosts: reslt.length,
+                    sessUser: req.session.user});
+                })
             });
         });
     }
@@ -53,21 +78,17 @@ router.get('/:id/edit', (req,res) => {
 
 /* Update writer in database */
 router.put('/:id', (req,res) => {
-  let name = req.body.name;
-  let bio = req.body.bio;
-  let username = req.body.username;
-  let id = req.params.id;
-
-  con.query(`SELECT * FROM users WHERE username = ?`,[username], function (err, result) {
+    let username = req.body.username;
+    con.query(`SELECT * FROM users WHERE username = ?`,[username], function (err, result) {
       if (result.length > 0){
           if(result[0].user_id == id){
-              update(name, bio, username, id, res)
+              update(req, res)
           }else{
-              req.flash('err', 'Username already in use')
+              req.flash('err', 'Username already in use');
               res.redirect(`/writers/${id}/edit`)
           }
       }else {
-          update(name, bio, username, id, res)
+          update(req, res)
       }
   });
 });
@@ -75,10 +96,10 @@ router.put('/:id', (req,res) => {
 
 /*Delete User from database*/
 router.delete('/:id', (req, res) => {
-    con.query('DELETE FROM posts WHERE user_id = ?', [req.params.id], function (err, result) {
+    con.query('DELETE FROM posts WHERE user_id = ?', [req.params.id], function (err) {
         if (err) throw err;
       con.query('DELETE FROM users WHERE user_id = ?',[req.params.id],
-          function(err,result){
+          function(err){
             if(err) throw err;
             res.status(200).redirect('/logout');
           });
@@ -86,6 +107,7 @@ router.delete('/:id', (req, res) => {
 });
 
 
+/* route to update account details */
 router.get('/:id/account', (req, res) => {
     if(!req.session.username && !req.session.loggedin){res.redirect('/')}else {
         con.query('SELECT * FROM users WHERE user_id = ?', [req.params.id], function (err, result) {
@@ -96,6 +118,7 @@ router.get('/:id/account', (req, res) => {
 });
 
 
+/* Update email */
 router.put('/:id/email', (req, res) => {
     let email = req.body.email;
     let id = req.params.id;
@@ -111,15 +134,15 @@ router.put('/:id/email', (req, res) => {
                     user: result, error: 'Email Address Already in use'});
             }
         }else {
-            con.query(`SELECT * FROM users WHERE user_id = ?`, [id], function (err, rslt) {
+            // con.query(`SELECT * FROM users WHERE user_id = ?`, [id], function () {
                 updateEmail(email, id, res);
-            })
+            // })
         }
     });
 });
 
 
-/* Update account details */
+/* Update password */
 router.put('/:id/password', (req, res) => {
     let currPassword = req.body.currPassword;
     let newPassword = req.body.newPassword;
@@ -148,13 +171,32 @@ router.put('/:id/password', (req, res) => {
 });
 
 
-function update(name, bio, username, id, res) {
-    let qry = `UPDATE users SET fullname = ?, bio = ?, username = ? WHERE user_id = ?`;
-    con.query(qry,[name, bio, username, id],
-        function(err){
-            if(err) throw err;
-            res.status(200).redirect('/writers/'+id);
-        });
+function update(req, res) {
+    upload(req, res, function (err) {
+        if(err){
+            req.flash('err', 'Error uploading file');
+            res.redirect(`writers/${req.params.id}/edit`);
+        }else{
+            const fileName = req.file != null ? req.file.filename : null;
+
+            let name = req.body.name;
+            let bio = req.body.bio;
+            let username = req.body.username;
+            let id = req.params.id;
+            let profile = fileName;
+
+            let profileImg_prt = `, profile = ${mysql.escape(profile)}`;
+
+            if(fileName == null || !req.file){profileImg_prt='';}
+
+            let qry = `UPDATE users SET fullname = ?, bio = ?, username = ?${profileImg_prt} WHERE user_id = ?`;
+            con.query(qry,[name, bio, username, id],
+                function(err){
+                    if(err) throw err;
+                    res.status(200).redirect('/writers/'+id);
+                });
+        }
+    })
 }
 
 function updateEmail(email, id, res){
