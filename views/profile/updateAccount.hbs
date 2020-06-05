@@ -3,7 +3,7 @@
 <div class="inner-container">
     <p>{{error}}</p>
     {{#each user}}
-        <form onsubmit="return emailVal()" action="/writers/{{user_id}}/email?_method=PUT" method="POST">
+        <form onsubmit="return emailVal()" action="/writers/email?_method=PUT" method="POST">
             <h3>Update Account Details</h3>
             <hr>
             <div class="form-item">
@@ -15,7 +15,7 @@
             </div>
         </form>
 
-        <form onsubmit="return validations()" action="/writers/{{user_id}}/password?_method=PUT" method="POST">
+        <form onsubmit="return validations()" action="/writers/password?_method=PUT" method="POST">
             <hr>
             <div class="form-row">
                 <div class="form-item">

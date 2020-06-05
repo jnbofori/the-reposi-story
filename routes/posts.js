@@ -84,7 +84,7 @@ router.post('/', function (req, res) {
 });
 
 
-/* Show book page */
+/* Show post page */
 router.get('/:id/show', function (req, res) {
     if(!req.session.username && !req.session.loggedin){res.redirect('/');}else {
         let qry = `SELECT * FROM posts INNER JOIN users ON users.user_id = posts.user_id WHERE posts.post_id = ${req.params.id}`;
@@ -93,7 +93,16 @@ router.get('/:id/show', function (req, res) {
             con.query(`SELECT COUNT(post_id) AS NumberOfLikes FROM likes WHERE post_id = ?`, [req.params.id],
                 function (err, reslt) {
                 if (err) throw err;
-                res.render('posts/showPost', {posts: result, sessUser: req.session.user, likes: reslt});
+                con.query(`SELECT * FROM comments INNER JOIN users ON users.user_id = comments.user_id WHERE post_id = ?`,[req.params.id],
+                    function (err, rslt) {
+                    if (err) throw err;
+                    res.render('posts/showPost', {
+                        title: `View Post`,
+                        posts: result,
+                        sessUser: req.session.user,
+                        likes: reslt,
+                        comments: rslt});
+                })
             })
         });
     }
@@ -142,7 +151,7 @@ router.put('/:id', function (req, res) {
 });
 
 
-/*Delete Book from database*/
+/*Delete Post from database*/
 router.delete('/:id', (req, res) => {
     con.query('SELECT cover_image_name FROM posts WHERE post_id = '+req.params.id,function(err, result){
         if(err) throw err;
@@ -188,6 +197,21 @@ router.get('/:id/checklike', function (req, res) {
             }else {
                 res.end;
             }
+        })
+});
+
+
+/* comment on post */
+router.post('/:id/comment', function (req, res) {
+    let postId = req.params.id;
+    let comment = req.body.comment;
+    let userId = req.session.user;
+    console.log(userId);
+
+    con.query(`INSERT INTO comments(post_id,comment,user_id) VALUES (?,?,?)`, [postId, comment, userId],
+        function (err, result) {
+        if(err) throw err;
+        res.status(200).redirect(`/posts/${postId}/show`);
         })
 });
 

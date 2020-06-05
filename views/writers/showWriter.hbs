@@ -13,8 +13,8 @@
 
 {{#each writers}}
 <div class="btn-row">
-<a class="btn btn-primary" href="/writers/{{user_id}}/edit">Edit</a>
-<form method="POST" action="/writers/{{user_id}}?_method=DELETE">
+<a class="btn btn-primary" href="/writers/edit">Edit</a>
+<form method="POST" action="/writers?_method=DELETE">
     <button class="btn btn-danger" type="submit">Delete</button>
 </form>
 </div>

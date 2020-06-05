@@ -42,33 +42,10 @@ router.get('/', function(req, res) {
 });
 
 
-/* Show writer page */
-router.get('/:id', (req, res) => {
-    if(!req.session.username && !req.session.loggedin){res.redirect('/')}else {
-        con.query('SELECT * FROM users WHERE user_id = ' + mysql.escape(req.params.id), function (err, result) {
-            if (err) throw err;
-            con.query('SELECT * FROM posts WHERE user_id = ' + mysql.escape(req.params.id), function (err, reslt) {
-                if (err) throw err;
-                con.query(`SELECT COUNT(likes.post_id) AS NumberOfLikes FROM posts INNER JOIN likes ON likes.post_id = posts.post_id WHERE posts.user_id = ?`,
-                    [req.params.id], function (err, rslt) {
-                res.render('writers/showWriter', {
-                    title: 'View Writer',
-                    writers: result,
-                    posts: reslt,
-                    likes: rslt,
-                    noOfPosts: reslt.length,
-                    sessUser: req.session.user});
-                })
-            });
-        });
-    }
-});
-
-
 /*  Edit writer Form Route */
-router.get('/:id/edit', (req,res) => {
+router.get('/edit', (req,res) => {
     if(!req.session.username && !req.session.loggedin){res.redirect('/')}else {
-        con.query(`SELECT * FROM users WHERE user_id = ${mysql.escape(req.params.id)}`, function (err, result) {
+        con.query(`SELECT * FROM users WHERE user_id = ${mysql.escape(req.session.user)}`, function (err, result) {
             if (err) throw err;
             res.render('writers/editWriter', {writers: result, sessUser: req.session.user});
         });
@@ -76,16 +53,18 @@ router.get('/:id/edit', (req,res) => {
 });
 
 
+
 /* Update writer in database */
-router.put('/:id', (req,res) => {
+router.put('/', (req,res) => {
     let username = req.body.username;
+    let id = req.session.user;
     con.query(`SELECT * FROM users WHERE username = ?`,[username], function (err, result) {
       if (result.length > 0){
           if(result[0].user_id == id){
               update(req, res)
           }else{
               req.flash('err', 'Username already in use');
-              res.redirect(`/writers/${id}/edit`)
+              res.redirect(`/writers/edit`)
           }
       }else {
           update(req, res)
@@ -95,10 +74,10 @@ router.put('/:id', (req,res) => {
 
 
 /*Delete User from database*/
-router.delete('/:id', (req, res) => {
-    con.query('DELETE FROM posts WHERE user_id = ?', [req.params.id], function (err) {
+router.delete('/', (req, res) => {
+    con.query('DELETE FROM posts WHERE user_id = ?', [req.session.user], function (err) {
         if (err) throw err;
-      con.query('DELETE FROM users WHERE user_id = ?',[req.params.id],
+      con.query('DELETE FROM users WHERE user_id = ?',[req.session.user],
           function(err){
             if(err) throw err;
             res.status(200).redirect('/logout');
@@ -108,9 +87,9 @@ router.delete('/:id', (req, res) => {
 
 
 /* route to update account details */
-router.get('/:id/account', (req, res) => {
+router.get('/account', (req, res) => {
     if(!req.session.username && !req.session.loggedin){res.redirect('/')}else {
-        con.query('SELECT * FROM users WHERE user_id = ?', [req.params.id], function (err, result) {
+        con.query('SELECT * FROM users WHERE user_id = ?', [req.session.user], function (err, result) {
             if (err) throw err;
             res.render('profile/updateAccount', {title: 'Update Account Details', sessUser: req.session.user, user: result})
         })
@@ -119,9 +98,9 @@ router.get('/:id/account', (req, res) => {
 
 
 /* Update email */
-router.put('/:id/email', (req, res) => {
+router.put('/email', (req, res) => {
     let email = req.body.email;
-    let id = req.params.id;
+    let id = req.session.user;
 
     con.query(`SELECT * FROM users WHERE email = ?`,[email], function (err, result) {
         if (result.length > 0){
@@ -143,10 +122,10 @@ router.put('/:id/email', (req, res) => {
 
 
 /* Update password */
-router.put('/:id/password', (req, res) => {
+router.put('/password', (req, res) => {
     let currPassword = req.body.currPassword;
     let newPassword = req.body.newPassword;
-    let id = req.params.id;
+    let id = req.session.user;
 
     con.query(`SELECT * FROM users WHERE user_id = ?`, [id], function (err, result) {
         bcrypt.compare(currPassword, result[0].password, function (err, reslt) {
@@ -156,7 +135,7 @@ router.put('/:id/password', (req, res) => {
                     con.query(qry,[hash, id],
                         function(err){
                             if(err) throw err;
-                            res.status(200).redirect('/profile/'+id);
+                            res.status(200).redirect('/profile');
                         });
                 })
             }else {
@@ -171,6 +150,29 @@ router.put('/:id/password', (req, res) => {
 });
 
 
+/* Show writer page */
+router.get('/:id', (req, res) => {
+    if(!req.session.username && !req.session.loggedin){res.redirect('/')}else {
+        con.query('SELECT * FROM users WHERE user_id = ' + mysql.escape(req.params.id), function (err, result) {
+            if (err) throw err;
+            con.query('SELECT * FROM posts WHERE user_id = ' + mysql.escape(req.params.id), function (err, reslt) {
+                if (err) throw err;
+                con.query(`SELECT COUNT(likes.post_id) AS NumberOfLikes FROM posts INNER JOIN likes ON likes.post_id = posts.post_id WHERE posts.user_id = ?`,
+                    [req.params.id], function (err, rslt) {
+                        res.render('writers/showWriter', {
+                            title: 'View Writer',
+                            writers: result,
+                            posts: reslt,
+                            likes: rslt,
+                            noOfPosts: reslt.length,
+                            sessUser: req.session.user});
+                    })
+            });
+        });
+    }
+});
+
+
 function update(req, res) {
     upload(req, res, function (err) {
         if(err){
@@ -182,7 +184,7 @@ function update(req, res) {
             let name = req.body.name;
             let bio = req.body.bio;
             let username = req.body.username;
-            let id = req.params.id;
+            let id = req.session.user;
             let profile = fileName;
 
             let profileImg_prt = `, profile = ${mysql.escape(profile)}`;
@@ -192,8 +194,11 @@ function update(req, res) {
             let qry = `UPDATE users SET fullname = ?, bio = ?, username = ?${profileImg_prt} WHERE user_id = ?`;
             con.query(qry,[name, bio, username, id],
                 function(err){
-                    if(err) throw err;
-                    res.status(200).redirect('/writers/'+id);
+                    if(err) {
+                        deleteProfileImage(profile);
+                        throw err;
+                    }
+                    res.status(200).redirect('/profile');
                 });
         }
     })
@@ -203,8 +208,14 @@ function updateEmail(email, id, res){
     let qry = `UPDATE users SET email = ? WHERE user_id = ?`;
     con.query(qry,[email, id], function(err){
         if(err) throw err;
-        res.status(200).redirect('/profile/'+id);
+        res.status(200).redirect('/profile');
     });
+}
+
+function deleteProfileImage(filename){
+    fs.unlink(path.join('public/images/profileImages/',filename), (err)=>{
+        if(err) console.error(err)
+    })
 }
 
 
