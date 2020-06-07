@@ -54,7 +54,7 @@ router.get('/:type', function(req, res) {
 });
 
 
-/* Add new book to database */
+/* Add new post to database */
 router.post('/', function (req, res) {
     upload(req, res, (err) => {
         if(err){
@@ -76,7 +76,7 @@ router.post('/', function (req, res) {
                     [title, type, content, excerpt, cover, userID],
                     function (err) {
                         if (err) {deleteImage(cover)}
-                        res.status(200).redirect(`/profile/${userID}`);
+                        res.status(200).redirect(`/home`);
                     });
             }
         }

@@ -26,20 +26,28 @@ body {
 /*    background-position: top;*/
 /*}*/
 
-/*.container {*/
-/*    max-width: 1200px;*/
-/*    margin: auto;*/
-/*    margin-bottom: 3rem;*/
-/*    z-index: 2;*/
-/*}*/
+.container {
+    /*max-width: 1200px;*/
+    margin: auto auto 3rem auto;
+    /*z-index: 2;*/
+}
 
-/*.inner-container {*/
-/*    margin: 0 2rem;*/
-/*}*/
+.inner-container {
+    margin: 1rem 3rem 0 3rem;
+}
 
-/*.page-header {*/
-/*    font-family: 'Calibri';*/
-/*    font-size: 2rem;*/
-/*    font-weight: 700;*/
-/*}*/
+.inner-container hr {
+    border-top: 1px solid #FBC02D;
+    width: 10%;
+}
+
+.inner-container h2 {
+    margin-left: 5rem;
+}
+
+.page-header {
+    /*font-size: 2rem;*/
+    /*font-weight: 700;*/
+    text-align: center;
+}
 

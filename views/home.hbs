@@ -1,22 +1,35 @@
 {{> header}}
 
 <div class="inner-container">
-<h2 class="page-header">Recently Added</h2>
-    <a href="/posts/new" class="add-btn"><i class="fa fa-plus-circle"></i></a>
-        <h3>Poems</h3>
+    <div>
+    <h1 class="page-header">Recently Added</h1>
+    <a href="/posts/new" class="fr fr-plus">&plus;</a>
+    </div>
+    <hr>
+
+    <h2>Poems</h2>
+    <div class="book-grid">
         {{#each poems}}
             {{> bookGrid}}
         {{/each}}
+    </div>
+    <hr style="border-top: 1px solid var(--color-primary); width: 100%">
 
-        <h3>Short Stories</h3>
+    <h2>Short Stories</h2>
+    <div class="book-grid">
         {{#each shortStories}}
             {{> bookGrid}}
         {{/each}}
+    </div>
+    <hr style="border-top: 1px solid #01579B; width: 100%">
 
-        <h3>Blog Posts</h3>
+    <h2>Blog Posts</h2>
+    <div class="book-grid">
         {{#each blogs}}
             {{> bookGrid}}
         {{/each}}
+    </div>
+
 </div>
 
 

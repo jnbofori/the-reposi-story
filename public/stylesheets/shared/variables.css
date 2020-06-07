@@ -6,6 +6,7 @@
     --color-background-light: hsl(var(--color-base-hue), 100%, 16%); /* no need */
     --color-text-light: hsl(0, 0%, 13%);
     --color-primary: #00796B;
+    --color-secondary : rgb(73, 79, 82);
     --color-primary-light: hsl(155, 44%, 81%);
 }
 
