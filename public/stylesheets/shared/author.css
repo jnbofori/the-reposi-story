@@ -1,8 +1,10 @@
 .author-row {
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap;
+    align-items: center;
+    flex-wrap: nowrap;
     margin-bottom: 1rem;
+    /*background-color: #B00020;*/
 }
 
 .author-item {
@@ -12,6 +14,14 @@
     flex-grow: 1;
     flex-basis: 0;
     font-size: 1rem;
+    /*background-color: #01579B;*/
+}
+
+.author-base-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
 }
 
 .profile-image {
@@ -25,5 +35,9 @@
         width: 100%;
         text-align: left;
         padding-bottom: 15px;
+    }
+
+    .author-row {
+        align-items: center;
     }
 }

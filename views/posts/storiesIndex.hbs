@@ -1,20 +1,21 @@
 {{> header}}
 
 <div class="inner-container">
-    <h2 class="page-header">Search Short Stories</h2>
-    <form action="/posts/stories" method="GET">
-        <div class="form-row">
-            <div class="form-item">
-                <input type="text" name="search">
-            </div>
+    <form class="search-form" action="/posts/stories" method="GET">
+        <div class="search-item">
+            <input type="text" placeholder="Search Short Stories" name="search">
         </div>
 
-        <div class="form-row form-row-end">
-            <button class="btn btn-primary" type="submit">Search</button>
+        <div class="search-btn">
+            <button type="submit">Search</button>
         </div>
     </form>
     <br>
+    <div class="book-grid">
     {{#each results}}
         {{> bookGrid}}
     {{/each}}
+    </div>
+
+    <a href="/posts/new" class="fr fr-plus">&plus;</a>
 </div>

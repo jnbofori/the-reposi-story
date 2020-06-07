@@ -12,31 +12,34 @@
 </script>
 
 <div class="inner-container">
-<h2 class="page-header">Search Writers</h2>
 <div class="error" id="error">{{messages.err}}</div>
-<form action="/writers" method="GET">
-    <div class="form-row">
-        <div class="form-item">
-            <label for="name">Name</label>
-            <input type="text" name="name" required>
-        </div>
+<form class="search-form" action="/writers" method="GET">
+    <div class="search-item">
+        <input type="text" placeholder="Search Writers" name="name" required>
     </div>
-    <div class="form-row form-row-end">
-    <button class="btn btn-primary" type="submit">Search</button>
+    <div class="search-btn">
+    <button type="submit">Search</button>
     </div>
 </form>
 <br>
 {{#each writers}}
     <div class="author-row">
-        <div class="author-item">
-            <div>{{fullname}}</div>
-            <div>{{username}}</div>
-            <div>{{bio}}</div>
+
+        <div class="author-base-item">
+            <img class="profile-image" src="/images/profileImages/{{profile}}" alt="Profile Picture">
+            <div class="author-item">
+                <div>{{fullname}}</div>
+                <div>{{username}}</div>
+                <div>{{bio}}</div>
+            </div>
         </div>
 
     <div class="btn-row">
     <a class="btn btn-primary" href="/writers/{{user_id}}">View</a>
     </div>
+
     </div>
 {{/each}}
+
+    <a href="/posts/new" class="fr fr-plus">&plus;</a>
 </div>

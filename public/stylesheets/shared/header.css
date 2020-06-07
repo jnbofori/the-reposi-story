@@ -46,8 +46,6 @@ header {
 }
 
 header div {
-    /*background-color: var(--color-primary);*/
-    /*background-color: #E0F2F1;*/
     background-color: #00d1b9;
     align-items: center;
     display: flex;
