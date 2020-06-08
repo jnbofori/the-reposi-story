@@ -25,7 +25,6 @@
   justify-content: center;
   font-family: "Open Sans", sans-serif;
   margin: 0;
-  /*padding: 0;*/
 }
 
 .indexInfo {
@@ -93,7 +92,10 @@ a{
 .cancelbtn {
   width: auto;
   padding: 10px 18px;
-  background-color: #f44336;
+  /*background-color: #f44336;*/
+  background-color: #B00020;
+  color: white;
+  cursor: pointer;
 }
 
 
@@ -197,10 +199,6 @@ hr {
   display: table;
 }
 
-.cancelbtn {
-  color: white;
-}
-
 #signup{
   float: right;
   padding-top: 15px;
@@ -230,6 +228,10 @@ hr {
 
   .modal-content{
     width: 100%;
+  }
+
+  .indexflex {
+    flex-wrap: wrap;
   }
 }
 

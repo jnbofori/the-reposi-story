@@ -3,9 +3,8 @@
 <div class="inner-container">
     <p>{{error}}</p>
     {{#each user}}
-        <form onsubmit="return emailVal()" action="/writers/email?_method=PUT" method="POST">
-            <h3>Update Account Details</h3>
-            <hr>
+        <form id="email-form" class="form-form" onsubmit="return emailVal()" action="/writers/email?_method=PUT" method="POST">
+            <h3 style="margin-top: 40px">Update Account Details</h3>
             <div class="form-item">
                 <label for="email"><b>Email</b></label><span class="acc-edit-error">Invalid Email</span>
                 <input type="text" id="email" name="email" required>
@@ -15,8 +14,7 @@
             </div>
         </form>
 
-        <form onsubmit="return validations()" action="/writers/password?_method=PUT" method="POST">
-            <hr>
+        <form class="form-form" onsubmit="return validations()" action="/writers/password?_method=PUT" method="POST">
             <div class="form-row">
                 <div class="form-item">
                     <label for="currPassword"><b>Current Password</b></label>

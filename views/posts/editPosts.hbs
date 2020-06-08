@@ -1,18 +1,50 @@
 {{> header}}
 
 <div class="inner-container">
-<h2 class="page-header">Edit Post</h2>
+<h2 class="">Edit Post</h2>
 {{msg}}
     {{#each results}}
-    <form action="/posts/{{post_id}}?_method=PUT" method="POST" enctype="multipart/form-data">
+    <form class="form-form" action="/posts/{{post_id}}?_method=PUT" method="POST" enctype="multipart/form-data">
 
          {{> form_fields_posts}}
 
         <div class="form-row form-row-end btn-row">
-    <!--    <a class="btn btn-danger" href="/books/{{book_id}}">Cancel</a>-->
         <button class="btn btn-primary" type="submit">Update</button>
         </div>
     </form>
     {{/each}}
 </div>
+
+<script>
+    const fileSelect = document.getElementById("fileSelect"),
+            coverInpt = document.getElementById("cover"),
+            preview = document.getElementById("preview");
+
+    fileSelect.style.display = 'none';
+    preview.style.display = 'block';
+
+    fileSelect.addEventListener("click", function (e) {
+        if (coverInpt) {
+            coverInpt.click();
+        }
+    }, false);
+
+    preview.addEventListener('click', function (e) {
+        if(coverInpt){
+            coverInpt.click();
+        }
+    }, false);
+
+    function handleFiles() {
+        let reader = new FileReader();
+        reader.readAsDataURL(coverInpt.files[0]);
+
+        reader.onload = function (e) {
+            preview.src = e.target.result;
+        };
+
+        fileSelect.style.display = 'none';
+        preview.style.display = 'block';
+    }
+</script>
 

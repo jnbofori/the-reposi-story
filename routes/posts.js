@@ -115,7 +115,7 @@ router.get('/:id/edit', (req,res) => {
         let qry = 'SELECT * FROM posts INNER JOIN users ON users.user_id = posts.user_id WHERE posts.post_id = ' + req.params.id;
         con.query(qry, function (err, result) {
             if (err) throw err;
-            res.render('posts/editPosts', {results: result, sessUser: req.session.user});
+            res.render('posts/editPosts', {results: result, sessUser: req.session.user, edit: true});
         });
     }
 });
@@ -162,7 +162,7 @@ router.delete('/:id', (req, res) => {
             function(err){
                 if(err) throw err;
                 deleteImage(filename);
-                res.status(200).redirect(`/profile/${req.session.user}`);
+                res.status(200).redirect(`/profile`);
             });
     })
 });

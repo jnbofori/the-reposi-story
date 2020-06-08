@@ -73,6 +73,6 @@
 /*    justify-self: stretch;*/
 /*}*/
 
-/*#book-description {*/
-/*    white-space: pre-wrap;*/
-/*}*/
+#book-description {
+    white-space: pre-wrap;
+}

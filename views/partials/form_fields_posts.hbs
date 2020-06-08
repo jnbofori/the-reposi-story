@@ -17,18 +17,20 @@
 <div class="form-row">
     <div class="form-item form-item-no-grow">
         <label for="cover"><b>Cover:</b></label>
-        <input type="file" name="cover">
+        <input type="file" id="cover" name="cover" onchange="handleFiles()" style="display: none">
+        <button type="button" id="fileSelect" class="file-select">Select file for cover image</button>
+        <img id="preview" src="/images/uploads/{{cover_image_name}}" class="img-preview"/>
     </div>
-    <div class="form-item">
+    <div class="form-item excerpt">
         <label for="excerpt"><b>Excerpt:</b></label>
-        <textarea name="excerpt" required>{{excerpt}}</textarea>
+        <textarea id="excerpt" name="excerpt" required>{{excerpt}}</textarea>
     </div>
 </div>
 
 <div class="form-row">
     <div class="form-item">
-        <label for="description"><b>Content:</b></label>
-        <textarea name="content" placeholder="Drag to adjust field size" required>{{content}}</textarea>
+        <label id="content-label" for="content"><b>Content:</b></label>
+        <textarea id="content-content" name="content" placeholder="Drag to adjust field size" required>{{content}}</textarea>
     </div>
 </div>
 

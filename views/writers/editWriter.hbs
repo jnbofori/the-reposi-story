@@ -4,7 +4,7 @@
 <h2 class="page-header">Edit Your Profile</h2>
     <div>{{messages.err}}</div>
 {{#each writers}}
-<form onsubmit="return passwordValidate()" action="/writers?_method=PUT" method="POST" enctype="multipart/form-data">
+<form class="form-form" onsubmit="return passwordValidate()" action="/writers?_method=PUT" method="POST" enctype="multipart/form-data">
     {{> form_fields}}
 
     <div class="form-row form-row-end btn-row">
@@ -15,6 +15,28 @@
 </div>
 
 <script>
+    // FOR PROFILE IMAGE
+     const profileInpt = document.getElementById("profile"),
+            profilePreview = document.getElementById("profile-preview");
+
+    profilePreview.addEventListener('click', function (e) {
+        e.preventDefault();
+        if(profileInpt){
+            profileInpt.click();
+        }
+    }, false);
+
+    function handleFiles() {
+        let reader = new FileReader();
+        reader.readAsDataURL(profileInpt.files[0]);
+
+        reader.onload = function (e) {
+            profilePreview.src = e.target.result;
+        };
+
+    }
+
+
     let mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
     let fullname = document.getElementById("fullname");
@@ -81,5 +103,5 @@
         if(password.value != psw_repeat.value){
             errors[4].style.display ="inline";
         }else{errors[4].style.display ="none";}
-    }
+    };
 </script>

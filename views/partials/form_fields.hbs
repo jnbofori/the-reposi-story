@@ -1,12 +1,16 @@
 <div class="form-row">
-    <div class="form-item form-item-no-grow">
+    <div class="form-item form-item-no-grow prof">
         <label for="profile"><b>Profile Picture:</b></label>
-        <input type="file" name="profile">
+        <input type="file" id="profile" name="profile" onchange="handleFiles()" style="display: none">
+<!--        <button type="button" id="profile-fileSelect" class="profile-image">Select file for profile picture</button>-->
+        <img id="profile-preview" src="/images/profileImages/{{profile}}" class="profile-image" style="cursor: pointer"/>
     </div>
     <div class="form-item">
         <label for="name"><b>Name</b></label><span class="edit-error">Invalid name</span>
         <input type="text" name="name" id="fullname" value="{{fullname}}" required>
     </div>
+</div>
+<div class="form-row">
     <div class="form-item">
         <label for="bio"><b>Bio</b></label>
         <input type="text" name="bio" value="{{bio}}" required>
