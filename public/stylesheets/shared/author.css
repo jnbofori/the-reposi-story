@@ -4,7 +4,6 @@
     align-items: center;
     flex-wrap: nowrap;
     margin-bottom: 1rem;
-    /*background-color: #B00020;*/
 }
 
 .author-item {
@@ -14,7 +13,6 @@
     flex-grow: 1;
     flex-basis: 0;
     font-size: 1rem;
-    /*background-color: #01579B;*/
 }
 
 .author-base-item {
@@ -30,6 +28,12 @@
     border-radius: 50%;
 }
 
+
+.comment-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
 
 @media screen and (max-width: 700px){
     .author-item {

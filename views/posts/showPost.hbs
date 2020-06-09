@@ -1,52 +1,61 @@
 {{> header}}
-<div class="inner-container">
+<div class="">
+
 {{#each posts}}
 <h2 class="page-header">{{title}}</h2>
 <div class="book-details">
-<div>
-    <img class="book-cover" src="/images/uploads/{{cover_image_name}}" alt="Book Cover">
+<div class="left-side">
+    <img class="book-cover show-cover" src="/images/uploads/{{cover_image_name}}" alt="Book Cover">
     <div class="book-details-btn-grid">
-        <form method="POST" action="/posts/{{post_id}}?_method=DELETE">
-            <button class="btn btn-danger" type="submit">Delete</button>
-        </form>
 
-        <a class="btn btn-primary book-details-author-button" href="/writers/{{user_id}}">View Author</a>
+        <a class="btn btn-primary book-details-author-button" href="/writers/{{user_id}}">View Author</a>{{/each}}
 
         <div id="hrt" onclick="like()"><i class="fa fa-heart"></i></div>
 
-    <form action="/posts/{{post_id}}/comment" method="POST">
-        <textarea rows="4" name="comment" class="inside" placeholder="Leave a comment..."></textarea>
-        <input id="button" type="submit" name="submit" value="Submit"/>
-    </form>
+        {{#each likes}}<div class="book-details-like-btn"><b>Likes: </b><span id="likes">{{NumberOfLikes}}</span></div>{{/each}}
     </div>
-{{/each}}
 
-    {{#each likes}}<div>Likes: <span id="likes">{{NumberOfLikes}}</span></div>{{/each}}
+    {{#each posts}}
+        <form action="/posts/{{post_id}}/comment" method="POST">
+            <textarea rows="6" name="comment" class="inside" placeholder="Leave a comment..."></textarea>
+            <input class="btn btn-secondary" id="comment-button" type="submit" name="submit" value="Submit"/>
+        </form>
+    {{/each}}
 
     <section id="comments">
-        <h3>Comments</h3>
+        <h3 style="text-align: center">Comments</h3>
         {{#each comments}}
-        <div>
-            <h4>{{username}}</h4>
-            <p>{{comment}}</p>
-        </div>
+            <div class="author-base-item" style="margin-bottom: 1rem">
+                <img class="comment-image" src="/images/profileImages/{{profile}}" alt="Profile Picture">
+                <div class="author-item" style="margin-left: 1rem">
+                    <div>{{username}}</div>
+                    <div>{{comment}}</div>
+                </div>
+            </div>
         {{/each}}
     </section>
 </div>
-{{#each posts}}
-<div class="book-details-grid">
-    <div class="book-details-label">Author:</div>
-    <div>{{fullname}}</div>
-    <div class="book-details-label">Type:</div>
-    <div>{{type}}</div>
-    <div class="book-details-label">Posted:</div>
-    <div><span id="date">{{created_at}}</span></div>
-    <div class="book-details-label">Content:</div>
-    <div id="book-description">{{content}}</div>
+
+
+    {{#each posts}}
+    <div class="right-side book-details-grid">
+        <div class="book-details-label">Author:</div>
+        <div>{{fullname}}</div>
+        <div class="book-details-label">Type:</div>
+        <div>{{type}}</div>
+        <div class="book-details-label">Posted:</div>
+        <div><span id="date">{{created_at}}</span></div>
+<!--        <div class="book-details-label">Content:</div>-->
+        <div id="book-description">{{content}}</div>
+    </div>
+    {{/each}}
+
 </div>
-{{/each}}
-</div>
+
+
+
     <a href="/posts/new" class="fr fr-plus">&plus;</a>
+
 </div>
 
 

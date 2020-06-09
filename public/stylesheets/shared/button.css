@@ -56,6 +56,16 @@
     background-color: var(--color-btn-danger-background-dark);
 }
 
+.btn-secondary {
+    color: black;
+    background-color: var(--color-primary-lighter);
+}
+
+#comment-button {
+    float: right;
+    margin-right: -30px;
+}
+
 .fr {
     padding: 0 20px;
     font-size: 50px;

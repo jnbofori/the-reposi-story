@@ -190,6 +190,7 @@
     height: 150%;
     color: darkgrey;
     cursor: pointer;
+    margin-left: 20px;
 }
 
 #content-label {
