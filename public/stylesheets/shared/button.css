@@ -11,11 +11,9 @@
 }
 
 .btn {
-    /*border: 1px solid var(--color-btn-border);*/
     border: none;
     border-radius: .5rem;
     padding: .5rem 1rem;
-    /*font-size: 1rem;*/
     cursor: pointer;
     text-decoration: none;
     text-align: center;
@@ -40,8 +38,6 @@
 }
 
 .btn-primary:hover {
-    /*color: var(--color-btn-primary-text-dark);*/
-    /*background-color: var(--color-btn-primary-background-light);*/
     color: white;
     background-color: var(--color-secondary);
 }
@@ -56,9 +52,20 @@
     background-color: var(--color-btn-danger-background-dark);
 }
 
+.btn-danger-large {
+    padding: 1rem 2rem;
+    border-radius: 1rem;
+}
+
 .btn-secondary {
     color: black;
     background-color: var(--color-primary-lighter);
+}
+
+.btn-primary-inverse {
+    background-color: white;
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
 }
 
 #comment-button {

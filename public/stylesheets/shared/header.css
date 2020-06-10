@@ -61,7 +61,6 @@ header div img {
 }
 
 header div h2 {
-    /*color: white;*/
     color: var(--color-secondary);
     font-size: 200%;
 }

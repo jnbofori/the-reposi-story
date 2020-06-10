@@ -2,30 +2,28 @@
 
 <div class="inner-container">
 {{err}}
-{{#each writers}}
-    <img class="profile-image" src="/images/profileImages/{{profile}}" alt="Profile Picture"><!--Make sure change class-->
-<h2 class="page-header">{{fullname}}</h2>
-<h3>{{username}}</h3>
-<h3>{{bio}}</h3>
-{{/each}}
-    {{#each likes}}<div>Likes: {{NumberOfLikes}}</div>{{/each}}
-    <div>Posts: {{noOfPosts}}</div>
+    <div class="profile-info">
+        {{#each writers}}
+        <img class="profile-image" src="/images/profileImages/{{profile}}" alt="Profile Picture"><!--Make sure change class-->
+        <h3 id="profile-name">{{fullname}}</h3>
+            <div>{{bio}}</div>
+        <span class="span-flex">
+            <span><b>{{username}}  &bull;</b></span>
+        {{/each}}
+        {{#each likes}}<span><b>Likes: {{NumberOfLikes}}  &bull;</b></span>{{/each}}
+        <span><b>Posts: {{noOfPosts}}</b></span>
+        </span>
+    </div>
 
-{{#each writers}}
-<div class="btn-row">
-<a class="btn btn-primary" href="/writers/edit">Edit</a>
-<form method="POST" action="/writers?_method=DELETE">
-    <button class="btn btn-danger" type="submit">Delete</button>
-</form>
-</div>
-{{/each}}
 
-{{#if posts}}
-    <h2>Books by Author</h2>
-    {{#each posts}}
-        {{> bookGrid}}
-    {{/each}}
-{{/if}}
+    {{#if posts}}
+        <h2>Posts by Writer</h2>
+        <div class="book-grid">
+        {{#each posts}}
+            {{> bookGrid}}
+        {{/each}}
+        </div>
+    {{/if}}
 
     <a href="/posts/new" class="fr fr-plus">&plus;</a>
 </div>

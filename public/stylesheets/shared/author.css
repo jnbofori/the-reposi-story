@@ -28,11 +28,50 @@
     border-radius: 50%;
 }
 
+.profile-info {
+    /*margin: auto;*/
+    /*width: 85%;*/
+    /*padding: 20px 30px;*/
+    /*background-color: #f1f1f1;*/
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 40px 0;
+}
+
+.profile-info div {
+    max-width: 500px;
+    text-align: center;
+}
 
 .comment-image {
     width: 50px;
     height: 50px;
     border-radius: 50%;
+}
+
+.span-flex {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.span-flex span {
+    margin: 5px;
+}
+
+.span-flex span:first-child {
+    margin-left: 0;
+}
+
+.span-flex span:not(:first-child){
+    /*color: #01579B;*/
+    color: var(--color-primary);
+}
+
+#profile-name {
+    margin-bottom: 5px;
 }
 
 @media screen and (max-width: 700px){
