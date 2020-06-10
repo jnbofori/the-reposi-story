@@ -21,7 +21,7 @@
 }
 
 .search-btn button {
-    background-color: #00b8a2;
+    background-color: var(--color-primary-lighter);
     border: none;
     border-radius: 10px;
     width: 20%;

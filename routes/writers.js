@@ -30,12 +30,12 @@ router.get('/', function(req, res) {
             con.query(`SELECT * FROM users WHERE fullname LIKE ${mysql.escape(writerName)} OR username LIKE ${mysql.escape(writerName)}`,
                 function (err, result) {
                     if (err) throw err;
-                    res.render('writers/indexWriter', {title: 'Explore Writers', writers: result, sessUser: req.session.user})
+                    res.render('writers/indexWriter', {title: 'Explore Writers - the reposi-story', writers: result, sessUser: req.session.user})
                 })
         } else {
             con.query('SELECT * FROM users', function (err, result) {
                 if (err) throw err;
-                res.render('writers/indexWriter', {title: 'Explore Writers', writers: result, sessUser: req.session.user});
+                res.render('writers/indexWriter', {title: 'Explore Writers  - the reposi-story', writers: result, sessUser: req.session.user});
             })
         }
     }
@@ -47,7 +47,7 @@ router.get('/edit', (req,res) => {
     if(!req.session.username && !req.session.loggedin){res.redirect('/')}else {
         con.query(`SELECT * FROM users WHERE user_id = ${mysql.escape(req.session.user)}`, function (err, result) {
             if (err) throw err;
-            res.render('writers/editWriter', {writers: result, sessUser: req.session.user});
+            res.render('writers/editWriter', {title: `Edit Profile - the reposi-story`, writers: result, sessUser: req.session.user});
         });
     }
 });
@@ -91,7 +91,10 @@ router.get('/account', (req, res) => {
     if(!req.session.username && !req.session.loggedin){res.redirect('/')}else {
         con.query('SELECT * FROM users WHERE user_id = ?', [req.session.user], function (err, result) {
             if (err) throw err;
-            res.render('profile/updateAccount', {title: 'Update Account Details', sessUser: req.session.user, user: result})
+            res.render('profile/updateAccount', {
+                title: 'Update Account Details - the reposi-story',
+                sessUser: req.session.user,
+                user: result})
         })
     }
 });
@@ -108,7 +111,7 @@ router.put('/email', (req, res) => {
                 updateEmail(email, id, res);
             }else{
                 res.render(`profile/updateAccount`, {
-                    title: 'Update Account Details',
+                    title: 'Update Account Details - the reposi-story',
                     sessUser: req.session.user,
                     user: result, error: 'Email Address Already in use'});
             }
@@ -140,7 +143,7 @@ router.put('/password', (req, res) => {
                 })
             }else {
                 res.render(`profile/updateAccount`, {
-                    title: 'Update Account Details',
+                    title: 'Update Account Details - the reposi-story',
                     sessUser: req.session.user,
                     user: result,
                     error: 'Invalid Password'});
@@ -160,7 +163,7 @@ router.get('/:id', (req, res) => {
                 con.query(`SELECT COUNT(likes.post_id) AS NumberOfLikes FROM posts INNER JOIN likes ON likes.post_id = posts.post_id WHERE posts.user_id = ?`,
                     [req.params.id], function (err, rslt) {
                         res.render('writers/showWriter', {
-                            title: 'View Writer',
+                            title: `${result[0].fullname} - View Profile`,
                             writers: result,
                             posts: reslt,
                             likes: rslt,

@@ -51,3 +51,11 @@ body {
     text-align: center;
 }
 
+footer div {
+    padding: 30px 50px;
+    background-color: var(--color-secondary);
+    color: white;
+    font-size: small;
+    margin-top: 17rem;
+}
+

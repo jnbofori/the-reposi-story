@@ -2,7 +2,18 @@
 <div class="">
 
 {{#each posts}}
-<h2 class="page-header">{{title}}</h2>
+        <h2 class="page-header">{{title}}</h2>{{/each}}
+{{#if sameUser}}
+    {{#each posts}}
+    <div class="post-options">
+        <a class="btn btn-primary" style=" background-color: #00ACC1" href="/posts/{{post_id}}/edit">Edit</a>
+        <form method="POST" action="/posts/{{post_id}}?_method=DELETE">
+            <button class="btn btn-danger" style="padding: .7rem 1rem;" type="submit">Delete</button>
+        </form>
+    </div>
+    {{/each}}
+{{/if}}
+{{#each posts}}
 <div class="book-details">
 <div class="left-side">
     <img class="book-cover show-cover" src="/images/uploads/{{cover_image_name}}" alt="Book Cover">

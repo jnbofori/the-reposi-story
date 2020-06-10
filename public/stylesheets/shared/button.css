@@ -34,7 +34,9 @@
 
 .btn-primary {
     color: var(--color-btn-primary-text);
-    background-color: var(--color-btn-primary-background);
+    /*background-color: var(--color-btn-primary-background);*/
+    background-color: var(--color-primary-lighter);
+
 }
 
 .btn-primary:hover {
@@ -58,7 +60,7 @@
 }
 
 .btn-secondary {
-    color: black;
+    color: white;
     background-color: var(--color-primary-lighter);
 }
 

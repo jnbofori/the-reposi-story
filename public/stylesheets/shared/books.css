@@ -108,6 +108,18 @@ section#comments {
     overflow: auto;
 }
 
+.post-options {
+    float: right;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-right: 50px;
+}
+
+.post-options > * {
+    margin: 0 5px;
+}
+
 @media screen and (max-width: 700px){
     .book-details {
         flex-wrap: wrap;

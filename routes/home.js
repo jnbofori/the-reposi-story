@@ -11,7 +11,7 @@ router.get('/', function(req, res) {
                 con.query('SELECT * FROM posts INNER JOIN users ON users.user_id = posts.user_id WHERE type = "Blog" ORDER BY created_at DESC LIMIT 8', function (err, rslt) {
                     if (err) throw err;
                     res.render('home.hbs', {
-                        title: 'Home',
+                        title: 'Home - the reposi-story',
                         sessUser: req.session.user,
                         poems: result,
                         shortStories: reslt,

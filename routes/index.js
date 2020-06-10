@@ -8,7 +8,7 @@ router.get('/', function(req, res, next) {
   if(req.session.username && req.session.loggedin){
     res.redirect('/home');
   }else {
-    res.render('index', {title: 'Login', layout: 'indexLayout.hbs'});
+    res.render('index', {title: 'the reposi-story - Login', layout: 'indexLayout.hbs'});
   }
 });
 
@@ -16,7 +16,7 @@ router.get('/gotoSignUp', function (req, res) {
   if(req.session.username && req.session.loggedin){
     res.redirect('/home');
   }else {
-    res.render('signUp', {title: 'Sign Up', layout: 'indexLayout'})
+    res.render('signUp', {title: 'the reposi-story - Sign Up', layout: 'indexLayout'})
   }
 });
 
@@ -38,16 +38,16 @@ router.post('/auth', function(req, res){
             res.redirect('/home');
           }else{
             // console.log('Wrong Password');
-            res.render('index', { error: 'Invalid Password', layout: 'indexLayout.hbs' });
+            res.render('index', { error: 'Invalid Password', layout: 'indexLayout.hbs', title: 'the reposi-story - Login'});
           }
         });
       } else{
         // console.log('Incorrect Username and/or Password!');
-        res.render('index', {error: 'Invalid Email and/or Password', layout: 'indexLayout.hbs'});
+        res.render('index', {error: 'Invalid Email and/or Password', layout: 'indexLayout.hbs', title: 'the reposi-story - Login'});
       }
     });
   } else{
-    res.render('index', {error: 'Please enter Email and Password!', layout: 'indexLayout.hbs'});
+    res.render('index', {error: 'Please enter Email and Password!', layout: 'indexLayout.hbs', title: 'the reposi-story - Login'});
   }
 });
 

@@ -12,7 +12,7 @@ router.get('/', function(req, res) {
                 con.query(`SELECT COUNT(likes.post_id) AS NumberOfLikes FROM posts INNER JOIN likes ON likes.post_id = posts.post_id WHERE posts.user_id = ?`,
                     [req.session.user], function (err, rslt) {
                         res.render('profile/profile', {
-                            title: 'Profile',
+                            title: `${result[0].fullname} - Profile`,
                             user: result,
                             posts: reslt,
                             likes: rslt,

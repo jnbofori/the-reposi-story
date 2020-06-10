@@ -25,7 +25,7 @@ const upload = multer({
 // /* New Book form route */
 router.get('/new', function (req, res) {
     if(!req.session.username && !req.session.loggedin){res.redirect('/');}else {
-        res.render('posts/newPosts', {sessUser: req.session.user});
+        res.render('posts/newPosts', {sessUser: req.session.user, title: 'Create Post - the reposi-story'});
     }
 });
 
@@ -42,12 +42,18 @@ router.get('/:type', function(req, res) {
 
             con.query(qry, function (err, result) {
                 if (err) throw err;
-                res.render(`posts/${req.params.type}Index`, {results: result, sessUser: req.session.user});
+                res.render(`posts/${req.params.type}Index`, {
+                    title: `${type} - the reposi-story`,
+                    results: result,
+                    sessUser: req.session.user});
             })
         } else {
             con.query(`SELECT * FROM posts INNER JOIN users ON users.user_id = posts.user_id WHERE type = ${mysql.escape(type)}`, function (err, result) {
                 if (err) throw err;
-                res.render(`posts/${req.params.type}Index`, {title: type, results: result, sessUser: req.session.user});
+                res.render(`posts/${req.params.type}Index`, {
+                    title: `${type} - the reposi-story`,
+                    results: result,
+                    sessUser: req.session.user});
             })
         }
     }
@@ -90,18 +96,25 @@ router.get('/:id/show', function (req, res) {
         let qry = `SELECT * FROM posts INNER JOIN users ON users.user_id = posts.user_id WHERE posts.post_id = ${req.params.id}`;
         con.query(qry, function (err, result) {
             if (err) throw err;
+            console.log(result)
             con.query(`SELECT COUNT(post_id) AS NumberOfLikes FROM likes WHERE post_id = ?`, [req.params.id],
                 function (err, reslt) {
                 if (err) throw err;
                 con.query(`SELECT * FROM comments INNER JOIN users ON users.user_id = comments.user_id WHERE post_id = ?`,[req.params.id],
                     function (err, rslt) {
                     if (err) throw err;
+                    let sameUser = false;
+                    if(result[0].user_id == req.session.user){
+                        sameUser = true;
+                    }
                     res.render('posts/showPost', {
-                        title: `View Post`,
+                        title: `${result[0].title} - the reposi-story`,
                         posts: result,
                         sessUser: req.session.user,
                         likes: reslt,
-                        comments: rslt});
+                        comments: rslt,
+                        sameUser: sameUser
+                    });
                 })
             })
         });
@@ -112,10 +125,21 @@ router.get('/:id/show', function (req, res) {
 /*  Edit Posts Form Route */
 router.get('/:id/edit', (req,res) => {
     if(!req.session.username && !req.session.loggedin){res.redirect('/');}else {
-        let qry = 'SELECT * FROM posts INNER JOIN users ON users.user_id = posts.user_id WHERE posts.post_id = ' + req.params.id;
-        con.query(qry, function (err, result) {
-            if (err) throw err;
-            res.render('posts/editPosts', {results: result, sessUser: req.session.user, edit: true});
+        con.query(`SELECT * FROM posts WHERE post_id = ?`, [req.params.id], function (err, reslt) {
+            if(reslt[0].user_id == req.session.user) {
+                let qry = 'SELECT * FROM posts INNER JOIN users ON users.user_id = posts.user_id WHERE posts.post_id = ' + req.params.id;
+                con.query(qry, function (err, result) {
+                    if (err) throw err;
+                    res.render('posts/editPosts', {
+                        results: result,
+                        sessUser: req.session.user,
+                        edit: true,
+                        title: `Edit Post - the reposi-story`
+                    });
+                });
+            }else {
+                res.redirect(`/posts/${req.params.id}/show`);
+            }
         });
     }
 });
@@ -143,7 +167,10 @@ router.put('/:id', function (req, res) {
             content = ${mysql.escape(content)}, excerpt = ${mysql.escape(excerpt)}${coverImg_prt} WHERE post_id = ${req.params.id}`;
 
             con.query(qry, function(err){
-                if(err) throw err; //and delete uploaded image
+                if(err) {
+                    deleteImage(cover);
+                    throw err;
+                }
                 res.status(200).redirect(`/posts/${req.params.id}/show`);
             });
         }
@@ -153,18 +180,24 @@ router.put('/:id', function (req, res) {
 
 /*Delete Post from database*/
 router.delete('/:id', (req, res) => {
-    con.query('SELECT cover_image_name FROM posts WHERE post_id = '+req.params.id,function(err, result){
-        if(err) throw err;
-
-        let filename = result[0].cover_image_name;
-
-        con.query('DELETE FROM posts WHERE post_id = ?',[req.params.id],
-            function(err){
+    con.query(`SELECT * FROM posts WHERE post_id = ?`, [req.params.id], function (err, reslt) {
+        if(reslt[0].user_id == req.session.user){
+            con.query('SELECT cover_image_name FROM posts WHERE post_id = '+req.params.id,function(err, result){
                 if(err) throw err;
-                deleteImage(filename);
-                res.status(200).redirect(`/profile`);
-            });
-    })
+
+                let filename = result[0].cover_image_name;
+
+                con.query('DELETE FROM posts WHERE post_id = ?',[req.params.id],
+                    function(err){
+                        if(err) throw err;
+                        deleteImage(filename);
+                        res.status(200).redirect(`/profile`);
+                    });
+            })
+        }else {
+            res.redirect(`/posts/${req.params.id}/show`);
+        }
+    });
 });
 
 
