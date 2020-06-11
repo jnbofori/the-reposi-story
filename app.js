@@ -11,6 +11,9 @@ const methodOverride = require('method-override');
 const logger = require('morgan');
 const cors = require('cors');
 const favicon = require('serve-favicon');
+if(process.env.NODE_ENV !== 'production'){
+  require('dotenv').config();
+}
 
 var indexRouter = require('./routes/index');
 var writersRouter = require('./routes/writers');
@@ -41,18 +44,12 @@ app.use(flash());
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 let con = mysql.createConnection({
-  host: "us-cdbr-east-05.cleardb.net",
-  user: "bccd983954c987",
-  password: "b7104204",
-  database: "heroku_a00f886c6a5b036"
+  host: process.env.DATABASE_URL,
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE
 });
 
-// let con = mysql.createConnection({
-//   host: "localhost",
-//   user: "root",
-//   password: "",
-//   database: "sample"
-// });
 
 con.connect(function(err){
   if (err) throw err;
