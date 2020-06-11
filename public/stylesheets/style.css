@@ -233,6 +233,10 @@ hr {
   .indexflex {
     flex-wrap: wrap;
   }
+
+  .indexInfo p {
+    margin-bottom: 5rem;
+  }
 }
 
 

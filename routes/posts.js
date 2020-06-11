@@ -96,7 +96,6 @@ router.get('/:id/show', function (req, res) {
         let qry = `SELECT * FROM posts INNER JOIN users ON users.user_id = posts.user_id WHERE posts.post_id = ${req.params.id}`;
         con.query(qry, function (err, result) {
             if (err) throw err;
-            console.log(result)
             con.query(`SELECT COUNT(post_id) AS NumberOfLikes FROM likes WHERE post_id = ?`, [req.params.id],
                 function (err, reslt) {
                 if (err) throw err;

@@ -10,6 +10,7 @@ const flash = require('express-flash');
 const methodOverride = require('method-override');
 const logger = require('morgan');
 const cors = require('cors');
+const favicon = require('serve-favicon');
 
 var indexRouter = require('./routes/index');
 var writersRouter = require('./routes/writers');
@@ -37,6 +38,7 @@ app.use(session({
   saveUninitialized: false
 }));
 app.use(flash());
+app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 
 let con = mysql.createConnection({
   host: "us-cdbr-east-05.cleardb.net",
@@ -44,6 +46,13 @@ let con = mysql.createConnection({
   password: "b7104204",
   database: "heroku_a00f886c6a5b036"
 });
+
+// let con = mysql.createConnection({
+//   host: "localhost",
+//   user: "root",
+//   password: "",
+//   database: "sample"
+// });
 
 con.connect(function(err){
   if (err) throw err;
