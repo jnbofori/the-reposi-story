@@ -39,10 +39,10 @@ app.use(session({
 app.use(flash());
 
 let con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "sample"
+  host: "us-cdbr-east-05.cleardb.net",
+  user: "bccd983954c987",
+  password: "b7104204",
+  database: "heroku_a00f886c6a5b036"
 });
 
 con.connect(function(err){
